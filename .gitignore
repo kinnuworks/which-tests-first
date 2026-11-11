@@ -9,3 +9,6 @@ gitignore-add.txt
 research/
 .playwright-mcp/
 work/
+__pycache__/
+*.pyc
+.venv*/
