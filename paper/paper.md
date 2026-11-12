@@ -150,12 +150,12 @@ Steps 1 and 2 ship as `skills/which_tests_first`, an ADK skill in the competitio
 
 ## 5. Related work
 
-Ekstazi (Gligoric et al., 2015), STARTS (Legunsen et al., 2017) and Google's call-graph ranking (Regression Test Selection at Scale) are the dynamic and static families our coverage and graph-distance baselines follow. Agentless (Xia et al., 2024) asks a hosted model which tests relate to an edit; TestPrune (2025) predicts suspicious methods and minimises the suite through coverage. Both use large hosted models and judge selection only through issue resolution; we score it directly, with laptop-sized models. Mutant detection correlates with real-fault detection (Just et al., 2014); Section 4.2 shows the gap can still be large for selection.
+Ekstazi (Gligoric et al., 2015), STARTS (Legunsen et al., 2017) and Google's call-graph ranking (Regression Test Selection at Scale) are the dynamic and static families our coverage and graph-distance baselines follow. Agentless (Xia et al., 2024) asks a hosted model which tests relate to an edit; TestPrune (2025) predicts suspicious methods and minimises the suite through coverage. Both use large hosted models and judge selection only through issue resolution; we score it directly, with laptop-sized models.
 
 ## 6. Limitations
 
 - **Small real sets.** 84 real regressions from three repositories (only 8 from requests) give wide intervals; prompt v2 was designed after seeing the FastAPI set.
-- **Python only.** The static graph's blind spots are Python's (inheritance, decorators, dynamic attributes).
+- **Python only.**
 - **Two small models, one laptop.** Latency comes from an Apple M5 with 16 GB; larger models may do better.
 - **Memorisation, tested.** These projects may be in Gemma's training data. In a pre-registered blind-recall probe, given only the repository and the changed function's name, Gemma named a test that exists for at most 7% of bugs and a failing test for at most 3%, far below its gains, so memorised test names do not explain them.
 
