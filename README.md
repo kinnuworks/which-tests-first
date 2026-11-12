@@ -2,7 +2,9 @@
 
 After a code change, a small Gemma 4 model running on a laptop reads the code graph and orders the tests so the one that catches a bug runs early.
 
-The code graph alone misses tests that reach the changed code through inheritance, decorators or attribute calls. A small local model can read the code and suggest those tests, but it costs seconds per change, so we also measure the suite runtime at which it pays off.
+The code graph alone misses tests that reach the changed code through inheritance, decorators or Python syntax (`in` calls `__contains__`, a `for` loop calls `__iter__`). A small local model can read the code and suggest those tests, but it costs seconds per change, so we also measure the suite runtime at which it pays off.
+
+**Result.** We planted 375 one-operator bugs in five Python repositories and kept only bugs the repository's own tests catch. Ordering tests by distance in the code graph puts a failing test in the first 10 for 56% of bugs. Gemma 4 E4B re-ranking raises that to 66% (+10.4 points, 95% interval +6.7 to +14.1), and E2B to 61%. Plain lexical similarity between the changed code and each test reaches 58%, so E4B beats it while E2B does not clearly. The model takes 2.5 s (E2B) to 14 s (E4B) per change, so on these suites it never saves wall-clock time; it pays off for suites of roughly 15 minutes or more on one core. "Coverage" in the figure is an upper bound: it needs a recorded run of every test, which a cheap method does not have.
 
 ![Bugs caught within the first k tests](paper/figs/fig1_recall_at_k.png)
 
@@ -27,7 +29,7 @@ All Gemma 4 prompts and answers are cached in `data/rr/cache`, keyed by the SHA-
 - `rts/select_tests.py` ranks tests with the six non-model methods; `rts/select_provided.py` adds rankings from the competition's provided code graph and embeddings.
 - `rts/rerank.py` asks Gemma 4 (via Ollama, temperature 0) to re-rank the tests and caches every answer.
 - `rts/analyze.py` and `rts/figures.py` build the tables and figures.
-- `data/` holds the planted bugs, kill matrices, per-test runtimes, every method's rankings and the cached model answers.
+- `data/` holds the planted bugs, the list of tests that fail for each bug (the kill matrix), per-test runtimes, every method's rankings and the cached model answers.
 
 ## Re-running the models
 

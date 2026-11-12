@@ -62,7 +62,8 @@ def main():
             if abs(y2 - p) < 0.05:
                 y2 = p + 0.05
         placed.append(y2)
-        ax.annotate(label, xy=(30, y), xytext=(31, y2), fontsize=8.5, color=INK, va="center", annotation_clip=False)
+        ax.annotate("", xy=(32.2, y2), xytext=(31.0, y2), arrowprops=dict(arrowstyle="-", color=color, lw=2.5), annotation_clip=False)
+        ax.annotate(label, xy=(30, y), xytext=(32.6, y2), fontsize=8.5, color=INK, va="center", annotation_clip=False)
         ax.plot([30], [y], marker="o", markersize=3.5, color=color, zorder=4)
     gray = [plt.Line2D([], [], color=MUTED, linewidth=1.2, label=OTHER[m]) for m in methods if m in OTHER]
     ax.legend(handles=gray, title="Other baselines (gray)", title_fontsize=8, fontsize=8, frameon=False,
@@ -73,7 +74,7 @@ def main():
     ax.set_ylabel("Share of bugs caught", color=INK2, fontsize=9.5)
     ax.set_title(f"Bugs caught within the first k tests, {len(rows)} planted bugs in {len({r['repo'] for r in rows})} repositories",
                  loc="left", color=INK, fontsize=10.5)
-    fig.subplots_adjust(right=0.72, left=0.09, bottom=0.12, top=0.9)
+    fig.subplots_adjust(right=0.70, left=0.09, bottom=0.12, top=0.9)
     fig.savefig(out / "fig1_recall_at_k.png", facecolor=SURFACE)
 
     # Figure 2: median time to first failure per repository (log scale), model time included
