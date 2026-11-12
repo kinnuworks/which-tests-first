@@ -1,0 +1,1 @@
+{"id": "fastapi_14349", "file": "fastapi/_compat/v2.py", "line": 265, "function": "_replace_refs", "kind": "real", "failing_tests": ["tests.test_schema_ref_pydantic_v2::test_openapi_schema"], "all_changed": [["fastapi/_compat/v2.py", "_replace_refs", 265, 12]], "base_commit": "eaf611f9ee56de4f16c837d4f487a4b9fca507c4"}

@@ -1,0 +1,1 @@
+{"model": "gemma4:e2b-it-qat", "content": "{\"ranked\": [\"test_get_model_fields_cached\", \"test_is_pv1_scalar_field\"]}", "wall_s": 10.519387006759644, "prompt_tokens": 19644, "output_tokens": 27, "prompt_s": 7.312499, "gen_s": 0.615}

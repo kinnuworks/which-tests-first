@@ -1,0 +1,1 @@
+{"id": "fastapi_14303", "file": "fastapi/dependencies/utils.py", "line": 906, "function": "_extract_form_body", "kind": "real", "failing_tests": ["tests.test_forms_single_model::test_extra_param_list"], "all_changed": [["fastapi/dependencies/utils.py", "_extract_form_body", 906, 8]], "base_commit": "740ec2787b25e59f7aa9e3df1db09d4489c22718"}

@@ -1,0 +1,1 @@
+{"id": "fastapi_14463", "file": "fastapi/openapi/utils.py", "line": 381, "function": "get_openapi_path", "kind": "real", "failing_tests": ["tests.test_additional_responses_union_duplicate_anyof::test_openapi_schema"], "all_changed": [["fastapi/openapi/utils.py", "get_openapi_path", 381, 2]], "base_commit": "f2687dc1bb01f4cb62eee90e656b61c38c2aaf6a"}

@@ -20,6 +20,7 @@ def jlines(path):
     return [json.loads(l) for l in open(path)]
 
 
+ORDERS, TIMES = {}, {}
 BASE = ["full", "name", "reach", "graphdist", "lexical", "coverage"]
 MODELS = {"e2b": "Gemma 4 E2B", "e4b": "Gemma 4 E4B"}
 B = 10000
@@ -48,6 +49,27 @@ def ttff(ranking, failing, tt):
         if t in fs:
             return s
     return s
+
+
+def hybrid_ttff(first, second, failing, tt, switch_at):
+    """Run `first` order from time 0; when the model answers (switch_at seconds), continue
+    with `second` order, skipping tests already run. Returns seconds to the first failure."""
+    fs, t, done = set(failing), 0.0, set()
+    for x in first:
+        if t >= switch_at:
+            break
+        t += tt.get(x, 0.0)
+        done.add(x)
+        if x in fs:
+            return t
+    t = max(t, switch_at)
+    for x in second:
+        if x in done:
+            continue
+        t += tt.get(x, 0.0)
+        if x in fs:
+            return t
+    return t
 
 
 def boot_ci(rows, fn, strata, seed=0):
@@ -92,12 +114,20 @@ def main():
                     x = mr[mid]
                     row["hit"][tag] = first_hit(x["ranking"], r["failing"])
                     row["ttff"][tag] = ttff(x["ranking"], r["failing"], tt) + x["wall_s"]
+                    row["ttff"][tag + "_hybrid"] = hybrid_ttff(r["graphdist"], x["ranking"], r["failing"], tt, x["wall_s"])
                     row.setdefault("model", {})[tag] = {k: x[k] for k in ("wall_s", "extra_used", "unknown", "parse_ok", "prompt_tokens")}
                     # did a test proposed outside the graph's reach fail?
                     extra = [t for t in x["ranking"][: x["n_model_items"]] if t not in r["dist"]]
                     row["model"][tag]["extra_hit"] = bool(set(extra) & set(r["failing"]))
                     row["model"][tag]["extra_tests"] = len(extra)
             rows.append(row)
+            o = {"graphdist": r["graphdist"], "failing": r["failing"]}
+            for tag, mr in model_rank.items():
+                if mid in mr:
+                    o[tag] = mr[mid]["ranking"]
+                    o[tag + "_wall"] = mr[mid]["wall_s"]
+            ORDERS.setdefault(repo, {})[mid] = o
+        TIMES[repo] = tt
 
     methods = BASE + [t for t in MODELS if all(t in r["hit"] for r in rows)]
     strata = [r["repo"] for r in rows]
@@ -188,6 +218,48 @@ def main():
             else:
                 out["breakeven"].setdefault(tag, {})[repo] = None
                 print(f"- {MODELS[tag]}, {repo}: model order is not faster in test time ({tm:.2f}s vs {tg:.2f}s); no break-even")
+
+    print("\n## Exploratory (not in the plan): hybrid schedule, start graph-distance tests while the model thinks\n")
+    out["hybrid"] = {}
+    print("| Repo | graph distance mean s | " + " | ".join(f"{t} alone | {t} hybrid" for t in MODELS if t in methods) + " | hybrid faster / slower / tie (E4B) |")
+    print("|---|---|" + "---|---|" * len([t for t in MODELS if t in methods]) + "---|")
+    for repo in repos + ["pooled"]:
+        rs = [r for r in rows if repo == "pooled" or r["repo"] == repo]
+        if not rs:
+            continue
+        g = sum(r["ttff"]["graphdist"] for r in rs) / len(rs)
+        cells, rec = [], {"graphdist": g}
+        for tag in [t for t in MODELS if t in methods]:
+            a = sum(r["ttff"][tag] for r in rs) / len(rs)
+            h = sum(r["ttff"][tag + "_hybrid"] for r in rs) / len(rs)
+            rec[tag], rec[tag + "_hybrid"] = a, h
+            cells.append(f"{a:.2f} | {h:.2f}")
+        tag = "e4b" if "e4b" in methods else "e2b"
+        fa = sum(1 for r in rs if r["ttff"][tag + "_hybrid"] < r["ttff"]["graphdist"] - 1e-9)
+        sl = sum(1 for r in rs if r["ttff"][tag + "_hybrid"] > r["ttff"]["graphdist"] + 1e-9)
+        rec["faster"], rec["slower"] = fa, sl
+        out["hybrid"][repo] = rec
+        print(f"| {repo} | {g:.2f} | " + " | ".join(cells) + f" | {fa} / {sl} / {len(rs)-fa-sl} |")
+
+    print("\n## Exploratory: hybrid schedule with test runtimes scaled by s (pooled mean seconds to first failure)\n")
+    out["hybrid_scaled"] = {}
+    # rebuild per-bug orderings to recompute times at each scale
+    scales = [1, 10, 30, 100, 300]
+    print("| s | graph distance | " + " | ".join(f"{t} alone | {t} hybrid" for t in MODELS if t in methods) + " |")
+    print("|---|---|" + "---|---|" * len([t for t in MODELS if t in methods]))
+    for sc in scales:
+        res = {"graphdist": [], **{t: [] for t in MODELS if t in methods}, **{t + "_hybrid": [] for t in MODELS if t in methods}}
+        for repo, orders in ORDERS.items():
+            tt = {k: v * sc for k, v in TIMES[repo].items()}
+            for mid, o in orders.items():
+                res["graphdist"].append(ttff(o["graphdist"], o["failing"], tt))
+                for t in MODELS:
+                    if t in o:
+                        res[t].append(ttff(o[t], o["failing"], tt) + o[t + "_wall"])
+                        res[t + "_hybrid"].append(hybrid_ttff(o["graphdist"], o[t], o["failing"], tt, o[t + "_wall"]))
+        mean = {k: sum(v) / len(v) for k, v in res.items() if v}
+        out["hybrid_scaled"][sc] = mean
+        print(f"| {sc} | {mean['graphdist']:.1f} | " + " | ".join(f"{mean[t]:.1f} | {mean[t + '_hybrid']:.1f}" for t in MODELS if t in methods) + " |")
 
     print("\n## Static misses and the model\n")
     out["misses"] = {}

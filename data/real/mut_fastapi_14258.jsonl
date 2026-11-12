@@ -1,0 +1,1 @@
+{"id": "fastapi_14258", "file": "fastapi/routing.py", "line": 1396, "function": "APIRouter.include_router", "kind": "real", "failing_tests": ["tests.test_router_circular_import::test_router_circular_import"], "all_changed": [["fastapi/routing.py", "APIRouter.include_router", 1396, 4]], "base_commit": "e94028ab60d18080810910352bc9129e8046c92d"}

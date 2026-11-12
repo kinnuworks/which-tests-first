@@ -1,0 +1,1 @@
+{"id": "fastapi_13920", "file": "fastapi/dependencies/utils.py", "line": 374, "function": "analyze_param", "kind": "real", "failing_tests": ["tests.test_dependency_pep695::test_pep695_type_dependencies"], "all_changed": [["fastapi/dependencies/utils.py", "analyze_param", 374, 3]], "base_commit": "0dd42b746e17d33a74ea267a62eace9ccdccf345"}

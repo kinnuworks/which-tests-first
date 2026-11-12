@@ -59,6 +59,27 @@ Every test's runtime is multiplied by s while model time stays fixed. Break-even
 - Gemma 4 E4B, fastapi: test time to first failure 5.00s (model order) vs 5.01s (graph distance), model 28.2s; break-even at x3729.1, a suite of about 116712s
 - Gemma 4 E4B, pooled: test time to first failure 1.28s (model order) vs 1.49s (graph distance), model 16.8s; break-even at x81.7, a suite of about 909s
 
+## Exploratory (not in the plan): hybrid schedule, start graph-distance tests while the model thinks
+
+| Repo | graph distance mean s | e2b alone | e2b hybrid | e4b alone | e4b hybrid | hybrid faster / slower / tie (E4B) |
+|---|---|---|---|---|---|---|
+| cachetools | 0.49 | 3.33 | 0.49 | 10.99 | 0.49 | 0 / 0 / 79 |
+| toolz | 0.43 | 1.75 | 0.43 | 13.16 | 0.43 | 0 / 0 / 78 |
+| humanize | 0.03 | 9.51 | 0.03 | 27.91 | 0.03 | 0 / 0 / 80 |
+| python-sortedcontainers | 2.35 | 4.03 | 2.25 | 8.56 | 2.26 | 6 / 4 / 68 |
+| fastapi | 5.01 | 13.88 | 5.01 | 33.16 | 5.01 | 0 / 0 / 60 |
+| pooled | 1.49 | 6.15 | 1.47 | 18.09 | 1.47 | 6 / 4 / 365 |
+
+## Exploratory: hybrid schedule with test runtimes scaled by s (pooled mean seconds to first failure)
+
+| s | graph distance | e2b alone | e2b hybrid | e4b alone | e4b hybrid |
+|---|---|---|---|---|---|
+| 1 | 1.5 | 6.2 | 1.5 | 18.1 | 1.5 |
+| 10 | 14.9 | 19.1 | 14.6 | 29.6 | 13.6 |
+| 30 | 44.7 | 47.8 | 43.5 | 55.3 | 40.3 |
+| 100 | 149.0 | 148.4 | 143.8 | 145.2 | 133.3 |
+| 300 | 447.0 | 435.8 | 431.5 | 402.1 | 385.6 |
+
 ## Static misses and the model
 
 - Gemma 4 E2B: recovered 18 of 117 static misses; proposed outside tests on 59 bugs, 41 of those had no failing proposal; 408 unknown names; 0 unparsable answers; median model time 2.5s

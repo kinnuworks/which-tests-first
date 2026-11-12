@@ -1,0 +1,1 @@
+{"id": "fastapi_14482", "file": "fastapi/_compat/v2.py", "line": 422, "function": "get_model_fields", "kind": "real", "failing_tests": ["tests.test_arbitrary_types::test_openapi_schema"], "all_changed": [["fastapi/_compat/v2.py", "ModelField.__post_init__", 98, 8], ["fastapi/_compat/v2.py", "get_model_fields", 422, 19]], "base_commit": "71a17b5932e38bcf798fcd05c5bb384e6d4db5bf"}

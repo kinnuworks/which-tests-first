@@ -1,0 +1,1 @@
+{"id": "fastapi_14361", "file": "fastapi/_compat/v2.py", "line": 307, "function": "_remap_definitions_and_field_mappings", "kind": "real", "failing_tests": ["tests.test_schema_compat_pydantic_v2::test_openapi_schema"], "all_changed": [["fastapi/_compat/v2.py", "_remap_definitions_and_field_mappings", 307, 2]], "base_commit": "5265c4f5cb4d8fb4fb5015bccf1a6de8f3fc6044"}

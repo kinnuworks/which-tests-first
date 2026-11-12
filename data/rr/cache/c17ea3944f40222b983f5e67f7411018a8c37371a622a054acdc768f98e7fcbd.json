@@ -1,0 +1,1 @@
+{"model": "gemma4:e2b-it-qat", "content": "{\"ranked\": [\"HTTPBase.__call__\", \"HTTPBasic.__call__\", \"HTTPBearer.__call__\", \"HTTPDigest.__call__\"]}", "wall_s": 10.370606660842896, "prompt_tokens": 20461, "output_tokens": 32, "prompt_s": 7.16832, "gen_s": 0.618734}

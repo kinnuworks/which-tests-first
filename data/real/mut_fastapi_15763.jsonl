@@ -1,0 +1,1 @@
+{"id": "fastapi_15763", "file": "fastapi/routing.py", "line": 2438, "function": "APIRouter.include_router", "kind": "real", "failing_tests": ["tests.test_router_include_context::test_no_prefix_include_validation_sees_effective_api_route_path"], "all_changed": [["fastapi/routing.py", "APIRouter.include_router", 2438, 13]], "base_commit": "9a9c4ad5d06f5fe8ee6775a5aeaa2f83c854f263"}

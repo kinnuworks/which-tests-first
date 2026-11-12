@@ -1,0 +1,1 @@
+{"model": "gemma4:e2b-it-qat", "content": "{\"ranked\": [\"test_frontend_exact_prefix_path_serves_index\", \"test_apirouter_frontend_with_router_prefix_and_frontend_subpath\", \"test_frontend_fallback_rejects_invalid_fallback\"]}", "wall_s": 10.829555034637451, "prompt_tokens": 22347, "output_tokens": 56, "prompt_s": 6.735767, "gen_s": 1.090411}

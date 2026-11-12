@@ -1,0 +1,1 @@
+{"id": "fastapi_14873", "file": "fastapi/routing.py", "line": 955, "function": "APIRouter.__init__", "kind": "real", "failing_tests": ["tests.test_router_events::test_startup_shutdown_handlers_as_parameters"], "all_changed": [["fastapi/routing.py", "APIRouter.__init__", 955, 21]], "base_commit": "cd31576d5704b6aef1bdadc43770238cd88aad2b"}

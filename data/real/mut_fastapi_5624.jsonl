@@ -1,0 +1,1 @@
+{"id": "fastapi_5624", "file": "fastapi/dependencies/utils.py", "line": 281, "function": "get_dependant", "kind": "real", "failing_tests": ["tests.test_security_scopes_dont_propagate::test_security_scopes_dont_propagate"], "all_changed": [["fastapi/dependencies/utils.py", "get_dependant", 281, 4]], "base_commit": "c6487ed632056e450d844846a1b63be551a3cbc6"}

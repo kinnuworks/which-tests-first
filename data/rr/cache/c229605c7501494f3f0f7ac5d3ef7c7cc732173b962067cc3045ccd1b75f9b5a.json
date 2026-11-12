@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests::test_get_openapi_accept_filtered_route_contexts_with_effective_paths\", \"tests::test_get_openapi_accept_webhook_route_contexts\", \"tests.test_modules_same_name_body::test_openapi_schema\"]}", "wall_s": 25.93365979194641, "prompt_tokens": 22823, "output_tokens": 63, "prompt_s": 18.865224, "gen_s": 1.939024}

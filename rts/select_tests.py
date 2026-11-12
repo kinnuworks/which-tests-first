@@ -153,6 +153,13 @@ def main():
                 rec["lexical"] = order
 
             covered = covmap.get((m["file"], m["line"]), set())
+            if m.get("kind") == "real" and changed in g:
+                # real fixes often start in a signature line that only runs at import;
+                # use every line of the changed function's body instead
+                d = g.nodes[changed]
+                covered = set()
+                for ln in range(d["start"] + 1, d["end"] + 1):
+                    covered |= covmap.get((m["file"], ln), set())
             rec["coverage"] = rest([t for t in order if t in covered])
             rec["n_covered"] = len(covered)
             w.write(json.dumps(rec) + "\n")
