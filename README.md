@@ -4,7 +4,7 @@ After a code change, a small Gemma 4 model running on a laptop reads the code gr
 
 The code graph alone misses tests that reach the changed code through inheritance, decorators or Python syntax (`in` calls `__contains__`, a `for` loop calls `__iter__`). A small local model can read the code and suggest those tests, but it costs seconds per change, so we also measure the suite runtime at which it pays off.
 
-**Result.** On 375 planted one-operator bugs in five Python repositories, ordering tests by code-graph distance puts a failing test in the first 10 for 56% of bugs; Gemma 4 E4B re-ranking raises that to 66% (+10.4 points, 95% interval +6.7 to +14.1) and E2B to 61%. On 76 real regressions replayed from the competition's FastAPI and Rich tasks every method does far worse: the pre-registered prompt adds nothing on FastAPI, E4B gains 19 points on held-out Rich, and a second prompt designed on FastAPI did not pass its pre-registered held-out test. Lexical similarity is a strong cheap baseline. Started in parallel with the graph-distance order, the model never slows the loop. "Coverage" is an upper bound: it needs a recorded run of every test.
+**Result.** On 375 planted one-operator bugs in five Python repositories, ordering tests by code-graph distance puts a failing test in the first 10 for 56% of bugs; Gemma 4 E4B re-ranking raises that to 66% (+10.4 points, 95% interval +6.7 to +14.1). On 84 real regressions replayed from the competition's FastAPI, Rich and requests tasks every method does far worse, but the pre-registered E4B re-ranker still adds 9.5 points over graph distance pooled (+3.6 to +15.5), with no gain on FastAPI and clear gains on the other two. Started in parallel with the graph-distance order, the model never slows the loop on average. "Coverage" is an upper bound on planted bugs only: it needs a recorded run of every test.
 
 ![Bugs caught within the first k tests](paper/figs/fig1_recall_at_k.png)
 
@@ -19,6 +19,8 @@ pip install networkx matplotlib
 python rts/analyze.py data cachetools toolz humanize python-sortedcontainers fastapi
 python rts/analyze_real.py data/real FastAPI
 python rts/analyze_real.py data/real_rich Rich
+python rts/analyze_real.py data/real_requests requests
+python rts/analyze_real_pooled.py data
 python rts/analyze_v2_planted.py data
 python rts/figures.py data paper/figs
 ```
