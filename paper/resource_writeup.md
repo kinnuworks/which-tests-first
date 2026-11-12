@@ -40,7 +40,7 @@ Planted bugs are the usual way to score test selection because their ground trut
 | Gemma 4 E4B re-rank | 0.10 [0.03, 0.20] | 0.36 [0.19, 0.53] | 0.62 [0.25, 0.88] | 0.26 [0.18, 0.36] |
 | Gemma 4 E2B re-rank, prompt v2 | 0.25 [0.12, 0.40] | 0.42 [0.25, 0.58] | 0.75 [0.38, 1.00] | 0.37 [0.27, 0.46] |
 
-The same methods reach 0.56 to 0.66 on the planted bugs. Full results, including the provided graph and embeddings, are in the companion paper and the notebook.
+The same methods reach 0.56 to 0.66 on the planted bugs. The released skill's model-free ordering (graph distance interleaved with shared identifiers) was never worse than graph distance in any of the 8 settings (5 planted repositories, 3 real) and added 6.5 points pooled over all 459 bugs and regressions. Full results, including the provided graph and embeddings, are in the companion paper and the notebook.
 
 ## 5. How to use it
 
