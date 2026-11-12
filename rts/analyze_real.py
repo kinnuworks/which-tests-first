@@ -25,6 +25,22 @@ def first_line(path):
     return None
 
 
+def times(junit):
+    import xml.etree.ElementTree as ET
+    if not Path(junit).exists():
+        return {}
+    return {f"{c.get('classname')}::{c.get('name')}": float(c.get("time") or 0) for c in ET.parse(junit).getroot().iter("testcase")}
+
+
+def ttff(ranking, failing, tt):
+    fs, s = set(failing), 0.0
+    for t in ranking:
+        s += tt.get(t, 0.0)
+        if t in fs:
+            return s
+    return s
+
+
 def first_hit(ranking, failing):
     fs = set(failing)
     for i, t in enumerate(ranking):
@@ -49,17 +65,22 @@ def main():
             continue
         if not r["failing"]:
             continue
-        row = {"id": tid, "hit": {}, "n_failing": len(r["failing"]), "suite": r["suite_size"]}
+        tt = times(d / f"prof_{tid}.junit.xml")
+        row = {"id": tid, "hit": {}, "ttff": {}, "n_failing": len(r["failing"]), "suite": r["suite_size"],
+               "suite_s": sum(tt.values())}
         for m in METHODS[:8]:
             if m in r:
                 row["hit"][m] = first_hit(r[m], r["failing"])
+                row["ttff"][m] = ttff(r[m], r["failing"], tt)
         for tag in ("e2b", "e4b"):
             x = first_line(d / f"rr_{tag}_{tid}.jsonl")
             if x is not None:
                 row["hit"][tag] = first_hit(x["ranking"], r["failing"])
+                row["ttff"][tag] = ttff(x["ranking"], r["failing"], tt)
             x2 = first_line(d / f"rr2_{tag}_{tid}.jsonl")
             if x2 is not None:
                 row["hit"][tag + "_v2"] = first_hit(x2["ranking"], r["failing"])
+                row["ttff"][tag + "_v2"] = ttff(x2["ranking"], r["failing"], tt)
         rows.append(row)
     ms = [m for m in METHODS if all(m in r["hit"] for r in rows)]
     label = sys.argv[2] if len(sys.argv) > 2 else "FastAPI"
@@ -87,6 +108,14 @@ def main():
         out.setdefault("r10pct", {})[m] = [f(rows), lo, hi]
         out.setdefault("median_rank", {})[m] = med
         print(f"| {LABEL[m]} | {f(rows):.2f} [{lo:.2f}, {hi:.2f}] | {med} |")
+    # seconds of test time until the first failing test, using each task's own per-test runtimes
+    print("\n| Method | median test-seconds to first failure | mean |\n|---|---|---|")
+    for m in ms:
+        vals = sorted(r["ttff"][m] for r in rows if m in r.get("ttff", {}))
+        if vals:
+            out.setdefault("ttff", {})[m] = {"median": vals[len(vals) // 2], "mean": sum(vals) / len(vals)}
+            print(f"| {LABEL[m]} | {vals[len(vals) // 2]:.2f} | {sum(vals) / len(vals):.2f} |")
+    print(f"\nFull-suite test time per task: median {sorted(r['suite_s'] for r in rows)[len(rows)//2]:.1f} s")
     print()
     for tag in ("e2b", "e4b", "e2b_v2", "e4b_v2"):
         if tag in ms:

@@ -32,6 +32,23 @@ Median failing tests per task: 1
 | Gemma 4 E2B, prompt v2 | 0.53 [0.36, 0.69] | 27 |
 | Gemma 4 E4B, prompt v2 | 0.75 [0.61, 0.89] | 21 |
 
+| Method | median test-seconds to first failure | mean |
+|---|---|---|
+| Full suite order | 3.28 | 6.76 |
+| Name match | 0.32 | 1.47 |
+| Reachability | 3.83 | 6.58 |
+| Graph distance | 2.86 | 5.55 |
+| Lexical similarity | 0.21 | 1.61 |
+| Provided graph | 6.44 | 10.60 |
+| Provided embeddings | 6.46 | 10.79 |
+| Coverage (upper bound) | 0.49 | 1.44 |
+| Gemma 4 E2B re-rank | 2.63 | 5.43 |
+| Gemma 4 E4B re-rank | 0.98 | 4.10 |
+| Gemma 4 E2B, prompt v2 | 0.34 | 2.68 |
+| Gemma 4 E4B, prompt v2 | 0.30 | 1.81 |
+
+Full-suite test time per task: median 11.9 s
+
 - Gemma 4 E2B re-rank minus Graph distance, Recall@10: +0.083 [+0.000, +0.194]
 - Gemma 4 E2B re-rank minus Lexical similarity, Recall@10: +0.000 [-0.167, +0.167]
 - Gemma 4 E4B re-rank minus Graph distance, Recall@10: +0.194 [+0.083, +0.333]
