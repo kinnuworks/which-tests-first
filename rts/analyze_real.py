@@ -8,10 +8,11 @@ import random
 import sys
 from pathlib import Path
 
-METHODS = ["full", "name", "reach", "graphdist", "lexical", "pgraph", "pemb", "coverage", "e2b", "e4b"]
+METHODS = ["full", "name", "reach", "graphdist", "lexical", "pgraph", "pemb", "coverage", "e2b", "e4b", "e2b_v2", "e4b_v2"]
 LABEL = {"full": "Full suite order", "name": "Name match", "reach": "Reachability", "graphdist": "Graph distance",
          "lexical": "Lexical similarity", "pgraph": "Provided graph", "pemb": "Provided embeddings",
-         "coverage": "Coverage (upper bound)", "e2b": "Gemma 4 E2B re-rank", "e4b": "Gemma 4 E4B re-rank"}
+         "coverage": "Coverage (upper bound)", "e2b": "Gemma 4 E2B re-rank", "e4b": "Gemma 4 E4B re-rank",
+         "e2b_v2": "Gemma 4 E2B, prompt v2 (post hoc)", "e4b_v2": "Gemma 4 E4B, prompt v2 (post hoc)"}
 
 
 def first_line(path):
@@ -56,6 +57,9 @@ def main():
             x = first_line(d / f"rr_{tag}_{tid}.jsonl")
             if x is not None:
                 row["hit"][tag] = first_hit(x["ranking"], r["failing"])
+            x2 = first_line(d / f"rr2_{tag}_{tid}.jsonl")
+            if x2 is not None:
+                row["hit"][tag + "_v2"] = first_hit(x2["ranking"], r["failing"])
         rows.append(row)
     ms = [m for m in METHODS if all(m in r["hit"] for r in rows)]
     print(f"## Real regressions: competition FastAPI tasks with the fix undone (n = {len(rows)} tasks)\n")
@@ -83,7 +87,7 @@ def main():
         out.setdefault("median_rank", {})[m] = med
         print(f"| {LABEL[m]} | {f(rows):.2f} [{lo:.2f}, {hi:.2f}] | {med} |")
     print()
-    for tag in ("e2b", "e4b"):
+    for tag in ("e2b", "e4b", "e2b_v2", "e4b_v2"):
         if tag in ms:
             for base in ("graphdist", "lexical"):
                 f = lambda rs, tag=tag, base=base: rec(10, tag)(rs) - rec(10, base)(rs)
