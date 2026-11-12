@@ -24,7 +24,7 @@ After a code change, which tests should an agent run first? We compare call-grap
 
 Coding agents fix bugs in a loop: read, edit, run tests, repeat, and in this competition every full test run spends a fixed time budget. Regression test selection asks which tests to run first after a change. Classic tools use static dependencies or recorded coverage; agent scaffolds ask a large hosted model. We ask whether a small local model, given a code graph like the one the competition gives its agents, helps, and when its latency is worth paying.
 
-Contributions: (1) the first study, to our knowledge, of code graphs and small local models for test selection, scored against kill matrices (which tests fail for each bug), with a memorisation probe and a graph-encoding ablation; (2) a replay benchmark of 84 real regressions from the competition's own tasks plus 375 planted bugs; (3) evidence that planted bugs overstate test selection, a schedule that hides the model's latency, and a model-free skill for the competition's harness.
+Contributions: (1) a study of what a small local model adds to code-graph test selection, scored against kill matrices (which tests fail for each bug), with a memorisation probe and a graph-encoding ablation; (2) a replay benchmark of 84 real regressions from the competition's own tasks plus 375 planted bugs; (3) evidence that planted bugs overstate test selection, a schedule that hides the model's latency, and a model-free skill for the competition's harness.
 
 ## 2. Data
 
@@ -104,7 +104,7 @@ On the FastAPI snapshot, the competition's provided graph reached a failing test
 | E2B, prompt v2 | 0.25 [0.12, 0.40] | 0.42 [0.25, 0.58] | 0.75 [0.38, 1.00] | 0.37 [0.27, 0.46] |
 | E4B, prompt v2 | 0.28 [0.15, 0.42] | 0.31 [0.17, 0.47] | 0.88 [0.62, 1.00] | 0.35 [0.25, 0.44] |
 
-Every method does far worse than on planted bugs (Figure 3). The failing tests are usually the ones written with the fix, and the changed functions are run by hundreds of other tests, so even coverage ranks them late on FastAPI.
+Every method does far worse than on planted bugs (Figure 3): the failing tests are usually new tests written with the fix, and the changed functions are run by hundreds of others.
 
 Pooled over all 84 tasks, the pre-registered E4B re-ranker adds 9.5 points over graph distance [+3.6, +15.5]. **Why the gain is uneven.** With the pre-registered prompt the model only sees tests the graph already found. On FastAPI that list held a failing test for just 4 of 40 tasks, so the model had nothing to promote and added nothing. On Rich, where the graph does better, E4B beats graph distance by 19.4 points [+8.3, +33.3].
 
@@ -131,7 +131,7 @@ Median model time per change was 2.5 s (E2B) and 13.9 s (E4B); graph distance us
 
 **Figure 2.** Median seconds until the first failing test runs, model time included for Gemma rows (log scale; lower is better). Run in sequence, the model's own latency dominates on these fast suites.
 
-The latency need not be paid in sequence. In a **hybrid schedule** tests start at once in graph-distance order while the model thinks, then switch to the model's order, skipping tests already run. It was never slower on average on our suites, and with test runtimes scaled by 10, 100 and 300 the E4B hybrid reached the first failure 9%, 11% and 14% sooner than graph distance. On the real regressions, whose suites take a median 12 to 14 s per run, E4B with prompt v2 reached the first failing test after a median 0.6 s (FastAPI) and 0.3 s (Rich) of test time, against 1.6 s and 2.9 s for graph distance. These latency analyses were not in the plan.
+The latency need not be paid in sequence. In a **hybrid schedule** tests start at once in graph-distance order while the model thinks, then switch to the model's order, skipping tests already run. It was never slower on average on our suites, and with test runtimes scaled by 10, 100 and 300 the E4B hybrid reached the first failure 9%, 11% and 14% sooner than graph distance. On the real regressions, E4B with prompt v2 reached the first failing test after a median 0.6 s (FastAPI) and 0.3 s (Rich) of test time, against 1.6 s and 2.9 s for graph distance. These latency analyses were not in the plan.
 
 ### 4.5 What should an agent do?
 
@@ -144,13 +144,12 @@ Steps 1 and 2 ship as `skills/which_tests_first`, an ADK skill in the competitio
 
 ## 5. Related work
 
-Ekstazi (Gligoric et al., 2015), STARTS (Legunsen et al., 2017) and Google's call-graph ranking (Regression Test Selection at Scale) are the dynamic and static families our coverage and graph-distance baselines follow. Agentless (Xia et al., 2024) asks a hosted model which tests relate to an edit; TestPrune (2025) predicts suspicious methods and minimises the suite through coverage. Both use large hosted models and judge selection only through issue resolution; we score it directly, with laptop-sized models.
+Ekstazi (Gligoric et al., 2015), STARTS (Legunsen et al., 2017) and Google's call-graph ranking (Regression Test Selection at Scale) are the dynamic and static families our coverage and graph-distance baselines follow. Agentless (Xia et al., 2024) asks a hosted model which tests relate to an edit; TestPrune (2025) predicts suspicious methods and minimises the suite through coverage. Both use large hosted models and judge selection only through issue resolution; we score it directly, with laptop-sized models. Two concurrent entries in this competition also study test selection for Gemma 4 agents: one with typed code graphs under time budgets, one as a test-file selection tool inside the agent loop. Ours differs in replaying real regressions from the competition's own tasks and in isolating what the model adds over the graph, with memorisation and encoding controls.
 
 ## 6. Limitations
 
 - **Small real sets.** 84 real regressions from three repositories (only 8 from requests) give wide intervals; prompt v2 was designed after seeing the FastAPI set.
 - **Python only.**
-- **Two small models, one laptop.** Latency comes from an Apple M5 with 16 GB; larger models may do better.
 - **Memorisation, tested.** These projects may be in Gemma's training data. In a pre-registered blind-recall probe, given only the repository and the changed function's name, Gemma named a test that exists for at most 7% of bugs and a failing test for at most 3%, far below its gains, so memorised test names do not explain them.
 
 ## 7. Reproducibility
