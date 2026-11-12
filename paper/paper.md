@@ -10,7 +10,7 @@ A coding agent on a laptop checks its own edits by running tests, and on a large
 
 ## 1. Introduction
 
-Coding agents fix bugs in a loop: read, edit, run tests, repeat. The competition this paper belongs to asks how far that loop can go with Gemma 4 on one accelerator, under a fixed time budget. Every turn of the loop that runs a whole test suite spends budget, and on a big repository a full run takes minutes. Developers have the same problem on their own machines.
+Coding agents fix bugs in a loop: read, edit, run tests, repeat. This competition asks how far that loop can go with Gemma 4 on one accelerator under a time budget, and every full test run spends budget. Developers have the same problem on their own machines.
 
 Regression test selection answers a narrow question: given a change, which tests should run first? Classic tools answer it with static dependency analysis or recorded coverage. Recent agent scaffolds answer it by asking a large hosted model. We ask whether a small model that runs locally, given a code graph of the kind the competition provides to its agents, helps, and when its latency is worth paying. On one of the competition's own snapshots we also test the provided graph and embeddings directly.
 
@@ -50,7 +50,7 @@ Every method returns a full ordering of the suite. A method that ranks only some
 
 ### 4.1 Which tests come first
 
-Table 1 pools all 375 bugs. Running the suite in its default order finds a failing test within the first 10 tests for 12% of bugs. Ordering by graph distance raises that to 56%, and lexical similarity reaches 58%. Gemma 4 E2B reaches 61% and E4B 66%. Coverage, which needs a recorded run of every test, reaches 83% and marks how much room is left.
+Table 1 pools all 375 bugs. The default order finds a failing test within the first 10 tests for 12% of bugs, graph distance for 56%, lexical similarity for 58%, Gemma 4 E2B for 61% and E4B for 66%. Coverage, which needs a recorded run of every test, reaches 83%.
 
 **Table 1.** Share of bugs with a failing test among the first k tests, all five repositories (n = 375). 95% bootstrap intervals, stratified by repository.
 
@@ -103,13 +103,13 @@ To ask when it would pay off, we scaled every test's runtime by a factor s while
 
 ### 4.5 Two pipeline problems we found and fixed
 
-Both are reported because they change numbers. First, FastAPI prompts (up to 22,551 tokens) exceeded the 16k context we set, and the runtime kept only the last half of the context, so in the first run the model never saw its candidate list. We raised the context to 32k and reran FastAPI; the first run's answers are kept in the repository. Second, the model often named parametrised tests without their `[parameter]` suffix, and the first scoring counted those as unknown. Scoring now matches the base name to all its variants; we re-scored every repository from the cached answers without new model calls. This raised FastAPI Recall@10 for both models from 0.35 to 0.37 and moved the pooled E4B Recall@1 from 0.40 to 0.35, partly because an expanded name puts all of its variants at the front.
+First, FastAPI prompts (up to 22,551 tokens) overflowed the 16k context and the runtime kept only the last half, so the model never saw its candidate list; we raised the context to 32k and reran FastAPI. Second, the model often named parametrised tests without their `[parameter]` suffix, which first counted as unknown; scoring now expands a base name to all its variants, re-scored from cached answers. Together these moved FastAPI Recall@10 for both models from 0.35 to 0.37 and pooled E4B Recall@1 from 0.40 to 0.35. First-run answers are in the repository.
 
 ## 5. Related work
 
 **Static and dynamic RTS.** Ekstazi (Gligoric et al., 2015) selects tests from recorded file dependencies; STARTS (Legunsen et al., 2017) does it statically from class-level dependencies. Google's pre-submit system (Regression Test Selection at Scale) ranks tests over a hybrid call graph at very large scale. Our graph-distance and coverage baselines are small versions of these two families.
 
-**LLMs for test selection in agents.** Agentless (Xia et al., 2024) asks a hosted model which existing tests relate to an edit and drops patches that break them. TestPrune (2025) uses a model to predict suspicious methods from an issue and then minimises the regression suite through coverage. Both use large hosted models and judge success by downstream issue resolution. We isolate the selection step, use models small enough for a laptop, and score selection directly against a kill matrix.
+**LLMs for test selection in agents.** Agentless (Xia et al., 2024) asks a hosted model which existing tests relate to an edit and drops patches that break them. TestPrune (2025) uses a model to predict suspicious methods from an issue and then minimises the regression suite through coverage. Both use large hosted models and judge selection only through issue resolution; we score it directly, with laptop-sized models.
 
 **Mutants as faults.** Just et al. (2014) found that mutant detection correlates with real-fault detection for test suites, which supports using planted bugs to compare selection methods, though not to estimate absolute miss rates on real regressions.
 
@@ -119,7 +119,7 @@ Both are reported because they change numbers. First, FastAPI prompts (up to 22,
 - **Python only, five repositories.** The static graph's blind spots are Python's (inheritance, decorators, dynamic attributes). Languages with explicit types would give a denser graph and likely a smaller gap for the model.
 - **One prompt, two small models.** We did not tune the prompt after seeing results. A better prompt or a larger model may do better; our numbers are a floor for this design.
 - **Latency is hardware-specific.** Model times come from one Apple M5 laptop with 16 GB of memory. The break-even point moves with hardware and with how many tests can run in parallel.
-- **Memorisation.** These are popular open-source projects that may be in Gemma's training data. The bugs themselves are new, but test names are not.
+- **Memorisation.** These popular projects may be in Gemma's training data; the bugs are new, the test names are not.
 
 ## 7. Reproducibility
 
