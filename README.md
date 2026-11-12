@@ -42,3 +42,7 @@ Install [Ollama](https://ollama.com), pull `gemma4:e2b-it-qat` and `gemma4:e4b-i
 ## Licence
 
 Apache 2.0.
+
+## Use it in the competition's agent harness
+
+`skills/which_tests_first/` is an ADK skill in the competition's submission format (`SKILL.md` plus a standard-library script). Add it to an agent with `skills: [skills/which_tests_first]` in `agent.yaml`; after each edit the agent runs `order_tests.py`, which reads `git diff HEAD` and prints the tests to run first (half by call-graph distance, half by shared identifiers, the same candidate pool as prompt v2). It needs no model call and runs in well under a second on the libraries here.
