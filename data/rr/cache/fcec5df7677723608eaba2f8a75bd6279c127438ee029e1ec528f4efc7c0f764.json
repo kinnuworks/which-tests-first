@@ -1,0 +1,1 @@
+{"model": "gemma4:e2b-it-qat", "content": "{\"ranked\": [\"test_dependency_set_status_code\"]}", "wall_s": 7.449228048324585, "prompt_tokens": 21427, "output_tokens": 15, "prompt_s": 7.059001, "gen_s": 0.269886}

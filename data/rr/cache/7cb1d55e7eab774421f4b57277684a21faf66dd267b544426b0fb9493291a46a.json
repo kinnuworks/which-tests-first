@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests::test_head [test_extra_routes]\"]}", "wall_s": 23.322912216186523, "prompt_tokens": 21247, "output_tokens": 18, "prompt_s": 20.859151, "gen_s": 0.536453}

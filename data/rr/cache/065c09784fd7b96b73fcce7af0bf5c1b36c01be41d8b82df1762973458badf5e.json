@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests::test_precisedelta_multiple_units[val13-days-1 month] [test_time]\", \"tests::test_precisedelta_multiple_units[val29-3 months] [test_time]\"]}", "wall_s": 18.59736394882202, "prompt_tokens": 14134, "output_tokens": 57, "prompt_s": 15.735997, "gen_s": 2.499804}

@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests.test_cachedmethod::test_decorator_immutable_dict\", \"tests.test_cachedmethod::test_decorator_no_set_name\", \"tests.test_cachedmethod::test_decorator_different_names\"]}", "wall_s": 10.226440906524658, "prompt_tokens": 5034, "output_tokens": 54, "prompt_s": 6.466584, "gen_s": 3.450596}

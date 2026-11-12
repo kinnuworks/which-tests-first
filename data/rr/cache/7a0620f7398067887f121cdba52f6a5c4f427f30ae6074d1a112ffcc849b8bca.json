@@ -1,0 +1,1 @@
+{"model": "gemma4:e2b-it-qat", "content": "{\"ranked\": [\"test_openapi_schema\"]}", "wall_s": 7.984154224395752, "prompt_tokens": 20711, "output_tokens": 11, "prompt_s": 7.688444, "gen_s": 0.201411}

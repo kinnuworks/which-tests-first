@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests.test_tlru::test_tlru_default_timer_stubs\", \"tests.test_ttl::test_ttl_default_timer_stubs\"]}", "wall_s": 9.742630958557129, "prompt_tokens": 4550, "output_tokens": 42, "prompt_s": 5.894758, "gen_s": 2.573382}

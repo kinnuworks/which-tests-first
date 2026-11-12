@@ -1,0 +1,1 @@
+{"model": "gemma4:e2b-it-qat", "content": "{\"ranked\": [\"test_EqualityHashKey_callable_key\"]}", "wall_s": 1.248955249786377, "prompt_tokens": 2310, "output_tokens": 15, "prompt_s": 0.804714, "gen_s": 0.397781}

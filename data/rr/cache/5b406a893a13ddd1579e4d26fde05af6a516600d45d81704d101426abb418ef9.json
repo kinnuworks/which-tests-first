@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"toolz.sandbox.tests::test_EqualityHashKey_callable_key\", \"toolz.sandbox.tests::test_EqualityHashKey_default_key\", \"toolz.sandbox.tests::test_EqualityHashKey_index_key\"]}", "wall_s": 9.071247100830078, "prompt_tokens": 2310, "output_tokens": 58, "prompt_s": 5.297926, "gen_s": 3.144397}

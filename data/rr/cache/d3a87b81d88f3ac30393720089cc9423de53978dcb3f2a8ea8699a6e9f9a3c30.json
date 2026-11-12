@@ -1,0 +1,1 @@
+{"model": "gemma4:e2b-it-qat", "content": "{\"ranked\": [\"tests::test_no_prefix_include_validation_sees_effective_starlette_route_candidates\", \"tests::test_no_prefix_include_validation_sees_effective_api_route_path\"]}", "wall_s": 7.404636859893799, "prompt_tokens": 20592, "output_tokens": 51, "prompt_s": 6.361611, "gen_s": 0.952277}

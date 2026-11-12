@@ -1,0 +1,1 @@
+{"model": "gemma4:e2b-it-qat", "content": "{\"ranked\": [\"tests.test_threading::test_cached_cond\", \"tests.test_threading::test_cached_lock\", \"tests.test_threading::test_cached_lock_cond\"]}", "wall_s": 3.008052110671997, "prompt_tokens": 5765, "output_tokens": 45, "prompt_s": 2.013586, "gen_s": 0.887298}

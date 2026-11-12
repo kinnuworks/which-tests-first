@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests::test_naturalday[test_args2-yesterday] [test_time]\", \"tests::test_naturalday[test_args0-today] [test_time]\", \"tests::test_naturalday[test_args1-tomorrow] [test_time]\"]}", "wall_s": 21.554279804229736, "prompt_tokens": 13557, "output_tokens": 66, "prompt_s": 18.02944, "gen_s": 3.019281}

@@ -1,0 +1,1 @@
+{"model": "gemma4:e2b-it-qat", "content": "{\"ranked\": [\"1\", \"4\", \"147.SortedDictSub.__init__\"]}", "wall_s": 1.4318768978118896, "prompt_tokens": 3207, "output_tokens": 22, "prompt_s": 1.037396, "gen_s": 0.368917}

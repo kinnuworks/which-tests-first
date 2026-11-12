@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests::test_included_unknown_route_is_ignored_and_can_return_default_404[asyncio]\"]}", "wall_s": 23.569273948669434, "prompt_tokens": 21378, "output_tokens": 35, "prompt_s": 20.827105, "gen_s": 1.108555}

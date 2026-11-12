@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests::test_contains\", \"src.sortedcontainers::sortedlist.SortedKeyList.__contains__\"]}", "wall_s": 4.197185039520264, "prompt_tokens": 2875, "output_tokens": 27, "prompt_s": 3.272851, "gen_s": 0.887101}

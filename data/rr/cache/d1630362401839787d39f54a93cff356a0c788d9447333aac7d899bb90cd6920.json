@@ -1,0 +1,1 @@
+{"model": "gemma4:e2b-it-qat", "content": "{\"ranked\": [\"1\"]}", "wall_s": 0.926055908203125, "prompt_tokens": 2299, "output_tokens": 7, "prompt_s": 0.790243, "gen_s": 0.121755}

@@ -23,6 +23,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 from codegraph import build  # noqa: E402
 
 TOP = 30
+PARAM_RE = r'\\[.*\\]$'
 MAX_EXTRA = 5
 OLLAMA = "http://localhost:11434/api/chat"
 
@@ -60,7 +61,7 @@ def call(model, prompt, cache_dir):
         return json.loads(path.read_text())
     body = json.dumps({
         "model": model, "stream": False, "think": False, "format": "json",
-        "options": {"temperature": 0, "seed": 0, "num_ctx": 16384, "num_predict": 400},
+        "options": {"temperature": 0, "seed": 0, "num_ctx": 32768, "num_predict": 400},
         "messages": [{"role": "system", "content": SYSTEM}, {"role": "user", "content": prompt}],
     }).encode()
     t0 = time.time()
@@ -102,12 +103,16 @@ def main():
         # other tests, deduplicated to file::name (parametrised and inherited copies collapse)
         def short(t):
             cls, name = t.split("::", 1)
-            return f"{cls.rsplit('.', 1)[0] if '.' in cls else cls}::{re.sub(r'\\[.*\\]$', '', name)}"
+            # kept byte-identical to the regex used for the cached runs (it does not strip parameters)
+            base = re.sub(PARAM_RE, '', name)
+            return f"{cls.rsplit('.', 1)[0] if '.' in cls else cls}::{base}"
         cand_set = set(cands)
         others = sorted({short(t) for t in order if t not in cand_set})
         by_short = defaultdict(list)
+        by_base = defaultdict(list)  # same name with any [parameter] suffix removed
         for t in order:
             by_short[short(t)].append(t)
+            by_base[re.sub(r"\[.*\]$", "", short(t))].append(t)
 
         d = g.nodes[changed] if changed in g else {}
         try:
@@ -138,8 +143,12 @@ def main():
                     ranked.append(cands[i])
             elif isinstance(it, str) and extra_used < MAX_EXTRA:
                 key = it.strip()
+                base_key = re.sub(r"\[.*\]$", "", key)
                 if key in by_short:
                     ranked.extend(by_short[key])
+                    extra_used += 1
+                elif base_key in by_base:
+                    ranked.extend(by_base[base_key])
                     extra_used += 1
                 else:
                     unknown += 1

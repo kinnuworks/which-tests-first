@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests::test_override_simple[/main-depends/-200-expected0] [test_dependency_overrides]\"]}", "wall_s": 24.21971297264099, "prompt_tokens": 22019, "output_tokens": 33, "prompt_s": 22.732744, "gen_s": 1.08285}

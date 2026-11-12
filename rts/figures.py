@@ -15,8 +15,8 @@ import matplotlib.pyplot as plt  # noqa: E402
 SURFACE, INK, INK2, GRID, MUTED = "#fcfcfb", "#0b0b0b", "#52514e", "#e4e3df", "#b5b4ae"
 # categorical slots 1-4 of the validated reference palette, light mode, fixed order
 FOCUS = {"graphdist": ("Graph distance", "#2a78d6"), "e2b": ("Gemma 4 E2B", "#eb6834"),
-         "e4b": ("Gemma 4 E4B", "#1baf7a"), "coverage": ("Coverage (upper bound)", "#eda100")}
-OTHER = {"full": "Full suite order", "name": "Name match", "reach": "Reachability", "lexical": "Lexical similarity"}
+         "e4b": ("Gemma 4 E4B", "#1baf7a"), "coverage": ("Coverage (upper bound)", "#eda100"), "lexical": ("Lexical similarity", "#e87ba4")}
+OTHER = {"full": "Full suite order", "name": "Name match", "reach": "Reachability"}
 REPO_LABEL = {"cachetools": "cachetools", "toolz": "toolz", "humanize": "humanize",
               "python-sortedcontainers": "sortedcontainers", "fastapi": "FastAPI"}
 
@@ -96,9 +96,9 @@ def main():
     ax.set_xlabel("Median seconds until the first failing test (model time included)", color=INK2, fontsize=9.5)
     handles = [plt.Line2D([], [], marker="o", linestyle="", markersize=7,
                           color=(FOCUS[m][1] if m in FOCUS else MUTED), label=(FOCUS[m][0] if m in FOCUS else OTHER[m])) for m in show]
-    ax.legend(handles=handles, frameon=False, fontsize=8.5, loc="lower right", labelcolor=INK)
-    ax.set_title("Time to the first failing test", loc="left", color=INK, fontsize=10.5)
-    fig.subplots_adjust(left=0.27, right=0.97, bottom=0.17, top=0.88)
+    ax.legend(handles=handles, frameon=False, fontsize=8.5, loc="lower left", bbox_to_anchor=(-0.36, 1.02), ncol=len(handles), columnspacing=1.2, handletextpad=0.3, labelcolor=INK)
+    fig.suptitle("Time to the first failing test", x=0.02, ha="left", color=INK, fontsize=10.5)
+    fig.subplots_adjust(left=0.27, right=0.97, bottom=0.17, top=0.82)
     fig.savefig(out / "fig2_time_to_failure.png", facecolor=SURFACE)
     print("figures written")
 

@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"test_get_in_returns_default_for_a_missing_path\", \"test_get_in_raises_when_no_default_is_set\"]}", "wall_s": 18.362546920776367, "prompt_tokens": 2722, "output_tokens": 42, "prompt_s": 10.48578, "gen_s": 7.310393}
