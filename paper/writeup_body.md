@@ -1,14 +1,14 @@
 ## Key findings
 
-**In one line:** order tests by distance in the code graph, let a small local model add the tests the graph cannot see, and test the result on real regressions, because planted bugs make every method look better than it is.
+**In one line:** benchmarks of planted bugs make test selection look far better than it is on real regressions, yet a small local model still finds tests a code graph misses, and the gain is not memory.
 
 We report Recall@10: the share of bugs whose failing test is among the first 10 tests run.
 
-1. **A small local model finds the tests a code graph misses.** On 375 planted bugs, graph distance reaches 56%; with Gemma 4 E4B re-ranking, 66%. Across all 459 bugs and regressions the gain is +10.2 points [+7.0, +13.5], and it holds in 6 of 8 settings. Much of it comes from tests that call the changed code through Python syntax, such as `in` calling `__contains__`.
-2. **Real regressions are much harder, but the model still helps.** On 84 real regressions replayed from the competition's own tasks in three repositories, graph distance reaches only 17%. The pre-registered E4B re-ranker reaches 26% (+9.5 points, 95% interval +3.6 to +15.5), though unevenly: no gain on FastAPI, clear gains on Rich and requests.
-3. **The provided code graph barely links tests to code:** 285 of its 2,752 call edges.
-4. **How the graph is described to the model does not matter; which tests it chooses does.**
-5. **The model's latency can be hidden, and a model-free version already helps.** Run in parallel with the graph-ordered tests, the model never slowed the loop on average. Our released skill, which interleaves graph distance with shared identifiers and needs no model, was never worse than graph distance in any of the 8 settings (+6.5 points pooled).
+1. **Planted bugs flatter every method.** On 375 planted bugs the best methods reach 56% to 83%; on 84 real regressions we replayed from the competition's own FastAPI, Rich and requests tasks, the same methods reach 17% to 37%.
+2. **A small local model still adds real value.** Gemma 4 E4B re-ranking beats graph distance by 10.4 points on planted bugs and 9.5 on real regressions (95% intervals above zero), in 6 of 8 settings. Much of the gain comes from tests that call the changed code through Python syntax, such as `in` calling `__contains__`.
+3. **The gain is not memory, and not the graph's wording.** Asked from memory, Gemma names a failing test for at most 3% of bugs; and describing the graph to it in different ways changes nothing. The graph matters by choosing which tests the model sees.
+4. **The provided code graph barely links tests to code:** 285 of its 2,752 call edges.
+5. **A model-free version ships today.** Our skill for the competition's harness was never worse than graph distance in any of the 8 settings (+6.5 points pooled), and the model's latency can be hidden by running tests in parallel.
 
 ## Abstract
 
