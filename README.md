@@ -8,7 +8,7 @@ The code graph alone misses tests that reach the changed code through inheritanc
 
 ![Bugs caught within the first k tests](paper/figs/fig1_recall_at_k.png)
 
-**Paper:** [paper/paper.md](paper/paper.md) · **Kaggle notebook:** {{NOTEBOOK_LINK}} · **Analysis plan (frozen before any method ran):** [analysis_plan.md](analysis_plan.md)
+**Paper:** [paper/paper.md](paper/paper.md) · **Kaggle notebook:** [which-tests-should-run-first](https://www.kaggle.com/code/dhirajkavuri/which-tests-should-run-first-rebuild-every-number) · **Analysis plan (frozen before any method ran):** [analysis_plan.md](analysis_plan.md)
 
 ## Rebuild every number (about two minutes, CPU only, no model needed)
 
