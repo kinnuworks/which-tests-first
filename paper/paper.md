@@ -6,8 +6,12 @@
 
 ## Key findings
 
+**Takeaway:** order tests by code-graph distance, add a small local model in parallel, and judge the result on real regressions, because planted bugs make every method look better than it is.
+
+We measure Recall@10, the share of bugs whose failing test is among the first 10 tests run. *Planted* bugs are one-operator edits we injected; *real* regressions undo genuine fixes from the competition's own tasks.
+
 - **On planted bugs, a small local model helps.** Graph distance puts a failing test in the first 10 for 56% of 375 bugs; Gemma 4 E4B re-ranking raises that to 66% (+10.4 points, 95% interval +6.7 to +14.1), mostly by finding tests the graph cannot reach, such as tests that call dunder methods through Python syntax.
-- **Planted bugs flatter every method.** On 76 real regressions replayed from the competition's own FastAPI and Rich tasks, the best method finds a failing test in the first 10 for at most 42% of tasks, and no prompt or model wins on both repositories.
+- **Planted bugs flatter every method.** On 76 real regressions from the competition's FastAPI and Rich tasks, the best method reaches at most 42%. Our pre-registered prompt helps on Rich but not FastAPI; a second prompt that also shows the model tests sharing words with the change fixes FastAPI but did not pass its held-out test on Rich.
 - **The competition's provided graph links few tests to code.** Only 285 of its 2,752 call edges run from tests into FastAPI code, and it reaches fewer failing tests than a plain AST graph.
 - **The model's latency can cost nothing.** Started in parallel with graph-distance tests, it never slowed the loop on average in our data.
 
@@ -42,7 +46,7 @@ Every method returns a full ordering; a partial ranking is completed in default 
 - **Name match**: tests whose name or file contains the changed function's or module's name.
 - **Reachability** and **graph distance**: tests that reach the changed function in a static call graph, the second ordered by shortest-path length.
 - **Lexical similarity**: TF-IDF cosine between the changed function's source and each test's source.
-- **Coverage**: tests that executed the changed line (on real regressions, the changed function). It needs a recorded run of every test, so it is an upper bound, not a competitor.
+- **Coverage**: tests that executed the changed line (on real regressions, the changed function). It needs a recorded run of every test. On planted bugs it is an upper bound; on real regressions it is not, because the failing tests are usually new tests written with the fix, which cover the function no more than hundreds of older tests do.
 - **Provided graph and embeddings** (FastAPI): graph distance over the competition's call graph, and cosine of its 256-dimensional node embeddings.
 - **Gemma re-rank**: Gemma 4 E2B or E4B (4-bit QAT, Ollama, temperature 0) sees the diff, the function's source, its callers and callees, and candidate tests, and returns up to 15 entries. **Prompt v1** (pre-registered) gives the 30 nearest tests by graph distance plus up to 600 other test names. **Prompt v2** (written after the FastAPI real results) gives 15 graph and 15 lexical candidates plus the full list of test files. The model's list goes first, then graph distance.
 
@@ -91,7 +95,7 @@ On the FastAPI snapshot, the competition's provided graph reached a failing test
 
 ![Figure 3](paper/figs/fig3_planted_vs_real.png)
 
-**Figure 3.** Recall@10 on planted bugs and on real regressions (dots offset vertically so none hide).
+**Figure 3.** Recall@10 on planted bugs and on real regressions. Dots are offset vertically so none hide.
 
 **Table 3.** Real regressions (fix undone): Recall@10, and median rank of the first failing test.
 
