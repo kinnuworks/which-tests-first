@@ -27,9 +27,10 @@ def first_line(path):
 
 def times(junit):
     import xml.etree.ElementTree as ET
-    if not Path(junit).exists():
+    src = junit if Path(junit).exists() else (gzip.open(str(junit) + ".gz", "rt") if Path(str(junit) + ".gz").exists() else None)
+    if src is None:
         return {}
-    return {f"{c.get('classname')}::{c.get('name')}": float(c.get("time") or 0) for c in ET.parse(junit).getroot().iter("testcase")}
+    return {f"{c.get('classname')}::{c.get('name')}": float(c.get("time") or 0) for c in ET.parse(src).getroot().iter("testcase")}
 
 
 def ttff(ranking, failing, tt):

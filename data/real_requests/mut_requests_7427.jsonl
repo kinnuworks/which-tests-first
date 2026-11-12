@@ -1,0 +1,1 @@
+{"id": "requests_7427", "file": "src/requests/utils.py", "line": 854, "function": "should_bypass_proxies", "kind": "real", "failing_tests": ["tests.test_utils::test_should_bypass_proxies_no_proxy_domain_boundary[http://prelocalhost/-False]"], "all_changed": [["src/requests/utils.py", "should_bypass_proxies", 854, 6]], "base_commit": "b684dcb9bbf3aa557d1238e72062c4a29737dd1c"}

@@ -1,0 +1,1 @@
+{"id": "requests_6589", "file": "src/requests/utils.py", "line": 137, "function": "super_len", "kind": "real", "failing_tests": ["tests.test_requests.TestRequests::test_content_length_for_string_data_counts_bytes"], "all_changed": [["src/requests/utils.py", "super_len", 137, 3]], "base_commit": "7a13c041dbef42f9f3feb14110f02626f6892e9a"}

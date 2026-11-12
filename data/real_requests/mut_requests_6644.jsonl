@@ -1,0 +1,1 @@
+{"id": "requests_6644", "file": "src/requests/adapters.py", "line": 393, "function": "HTTPAdapter.request_url", "kind": "real", "failing_tests": ["tests.test_adapters::test_request_url_trims_leading_path_separators"], "all_changed": [["src/requests/adapters.py", "HTTPAdapter.request_url", 393, 3]], "base_commit": "382fc2c0c6c0ef0874bc65bc1175f97c073e5086"}

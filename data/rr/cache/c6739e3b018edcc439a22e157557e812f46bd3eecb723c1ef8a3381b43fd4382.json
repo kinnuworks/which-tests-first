@@ -1,0 +1,1 @@
+{"model": "gemma4:e2b-it-qat", "content": "{\"ranked\": [\"test_juxt\", \"test_juxt_generator_input\"]}", "wall_s": 1.4623398780822754, "prompt_tokens": 2328, "output_tokens": 20, "prompt_s": 0.976132, "gen_s": 0.432507}

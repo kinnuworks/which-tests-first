@@ -6,18 +6,18 @@
 
 ## Key findings
 
-**Takeaway:** order tests by code-graph distance, add a small local model in parallel, and judge the result on real regressions, because planted bugs make every method look better than it is.
+**In one line:** order tests by distance in the code graph, let a small local model add the tests the graph cannot see, and test the result on real regressions, because planted bugs make every method look better than it is.
 
-We measure Recall@10, the share of bugs whose failing test is among the first 10 tests run. *Planted* bugs are one-operator edits we injected; *real* regressions undo genuine fixes from the competition's own tasks.
+We report Recall@10: the share of bugs whose failing test is among the first 10 tests run.
 
-- **On planted bugs, a small local model helps.** Graph distance puts a failing test in the first 10 for 56% of 375 bugs; Gemma 4 E4B re-ranking raises that to 66% (+10.4 points, 95% interval +6.7 to +14.1), mostly by finding tests the graph cannot reach, such as tests that call dunder methods through Python syntax.
-- **Planted bugs flatter every method.** On 76 real regressions from the competition's FastAPI and Rich tasks, the best method reaches at most 42%. Our pre-registered prompt helps on Rich but not FastAPI; a second prompt that also shows the model tests sharing words with the change fixes FastAPI but did not pass its held-out test on Rich.
-- **The competition's provided graph links few tests to code.** Only 285 of its 2,752 call edges run from tests into FastAPI code, and it reaches fewer failing tests than a plain AST graph.
-- **The model's latency can cost nothing.** Started in parallel with graph-distance tests, it never slowed the loop on average in our data.
+1. **A small local model finds the tests a code graph misses.** On 375 planted bugs, graph distance reaches 56%; with Gemma 4 E4B re-ranking, 66%. The gain comes from tests that reach the changed code through Python syntax, such as `in` calling `__contains__`.
+2. **Real regressions are much harder, but the model still helps.** On 84 real regressions replayed from the competition's own tasks in three repositories, graph distance reaches only 17%. The pre-registered E4B re-ranker reaches 26% (+9.5 points, 95% interval +3.6 to +15.5), though unevenly: no gain on FastAPI, clear gains on Rich and requests.
+3. **The provided code graph barely links tests to code.** Only 285 of its 2,752 call edges run from a test into FastAPI code.
+4. **The model's latency can be hidden.** Run in parallel with the graph-ordered tests, it never slowed the loop on average.
 
 ## Abstract
 
-A coding agent on a laptop checks its edits by running tests, and full runs are slow. We study regression test selection for this setting: after a change, order the tests so a failing one comes early. We plant 375 single-operator bugs in five Python repositories, including the competition's FastAPI snapshot, and replay 76 real regressions by undoing real fixes from the competition's FastAPI and Rich tasks. We compare six non-model methods, the competition's provided graph and embeddings, and Gemma 4 E2B and E4B re-ranking. The models help clearly on planted bugs and unevenly on real ones: the pre-registered prompt adds nothing on FastAPI but E4B gains 19 points on held-out Rich, and a second prompt designed on FastAPI did not pass its pre-registered held-out test. We release the benchmark, a drop-in skill for the competition's agent harness, and a notebook that rebuilds every number from cached model answers.
+After a code change, a coding agent should run first the tests most likely to fail. We compare ways to choose them on a laptop: call-graph distance, text similarity, coverage, the competition's provided graph and embeddings, and Gemma 4 E2B and E4B re-ranking. On 375 planted bugs in five Python repositories, the model adds 5.6 to 10.4 points over graph distance, mostly by finding tests the graph cannot reach. On 84 real regressions replayed from the competition's FastAPI, Rich and requests tasks, every method does far worse; pooled, the pre-registered E4B re-ranker still adds 9.5 points over graph distance, with no gain on FastAPI and clear gains on the other two. We release the benchmark, a drop-in skill for the competition's agent harness, and a notebook that rebuilds every number.
 
 ## 1. Introduction
 
@@ -27,14 +27,14 @@ Regression test selection asks which tests to run first after a change. Classic 
 
 Contributions:
 1. The first study, to our knowledge, of code graphs and small local models for test selection, scored directly against kill matrices (which tests fail for each bug).
-2. A replay benchmark: 76 real regressions built from the competition's own tasks, plus 375 planted bugs, released with the code that rebuilds them.
+2. A replay benchmark: 84 real regressions built from the competition's own tasks in three repositories, plus 375 planted bugs, released with the code that rebuilds them.
 3. Evidence that planted bugs overstate test selection, a schedule under which the model's latency costs nothing, and a ready-to-use skill for the competition's harness.
 
 ## 2. Data
 
 **Planted bugs.** Four small libraries (cachetools, toolz, humanize, sortedcontainers) and FastAPI at the competition's snapshot for task `fastapi_15800`, so the provided graph and embeddings match the code. In each, we swap one operator (comparison, arithmetic, `and`/`or`, boolean or 0/1 constant) at a uniformly sampled site, run the full suite, and keep the bug only if a test that passes on the original now fails: 80 per library, 60 for FastAPI, 375 after dropping five whose failing tests were missing from the profiling run. Suites take 2 to 31 seconds on one core.
 
-**Real regressions.** For each competition task whose fix edits an existing function, we check out the base commit with its own dependencies, apply the fix and its tests, then undo the fix. Tests that pass with the fix and fail without it are the ground truth. 40 FastAPI and 36 Rich tasks qualified (median 1 to 2 failing tests); tasks adding new code, timing out, or failing with the fix applied were dropped.
+**Real regressions.** For each competition task whose fix edits an existing function, we check out the base commit with its own dependencies, apply the fix and its tests, then undo the fix. Tests that pass with the fix and fail without it are the ground truth. 40 FastAPI, 36 Rich and 8 requests tasks qualified (median 1 to 2 failing tests); tasks adding new code, timing out, or failing with the fix applied were dropped.
 
 **Profiles.** One clean run per repository state records each test's runtime and, with coverage.py's per-test contexts, the lines it executed.
 
@@ -56,7 +56,7 @@ Every method returns a full ordering; a partial ranking is completed in default 
 
 ## 4. Results
 
-### 4.1 Planted bugs
+### 4.1 Does a small local model help? (planted bugs)
 
 **Table 1.** Share of planted bugs with a failing test among the first k tests (n = 375).
 
@@ -91,31 +91,31 @@ The gain is largest where the static graph is blind. In cachetools, 48 of 79 bug
 
 On the FastAPI snapshot, the competition's provided graph reached a failing test less often than our AST graph (Recall@10 0.22 [0.12, 0.32] against 0.35 [0.23, 0.47]), and its embeddings did about as well as lexical similarity (0.32 against 0.30). Only 285 of its 2,752 call edges run from tests into FastAPI code. Adding test-to-code edges, for example by resolving calls made through the `TestClient`, would make the provided graph far more useful for this task.
 
-### 4.2 Real regressions
+### 4.2 Does it hold on real regressions?
 
 ![Figure 3](paper/figs/fig3_planted_vs_real.png)
 
 **Figure 3.** Recall@10 on planted bugs and on real regressions. Dots are offset vertically so none hide.
 
-**Table 3.** Real regressions (fix undone): Recall@10, and median rank of the first failing test.
+**Table 3.** Real regressions (fix undone): Recall@10 with 95% bootstrap intervals over tasks. The pooled column is stratified by repository and was not in the plan.
 
-| Method | FastAPI (40) | rank | Rich (36) | rank |
+| Method | FastAPI (40) | Rich (36) | requests (8) | All 84, pooled |
 |---|---|---|---|---|
-| Graph distance | 0.10 [0.03, 0.20] | 422 | 0.17 [0.06, 0.31] | 346 |
-| Lexical similarity | 0.12 [0.03, 0.23] | 217 | 0.25 [0.11, 0.39] | 34 |
-| Coverage | 0.03 [0.00, 0.07] | 566 | 0.31 [0.17, 0.47] | 21 |
-| E2B, prompt v1 | 0.10 [0.03, 0.20] | 422 | 0.25 [0.11, 0.39] | 313 |
-| E4B, prompt v1 | 0.10 [0.03, 0.20] | 422 | 0.36 [0.19, 0.53] | 189 |
-| E2B, prompt v2 | 0.25 [0.12, 0.40] | 189 | 0.42 [0.25, 0.58] | 27 |
-| E4B, prompt v2 | 0.28 [0.15, 0.42] | 199 | 0.31 [0.17, 0.47] | 21 |
+| Graph distance | 0.10 [0.03, 0.20] | 0.17 [0.06, 0.31] | 0.50 [0.12, 0.88] | 0.17 [0.10, 0.25] |
+| Lexical similarity | 0.12 [0.03, 0.23] | 0.25 [0.11, 0.39] | 0.38 [0.00, 0.75] | 0.20 [0.12, 0.29] |
+| Coverage | 0.03 [0.00, 0.07] | 0.31 [0.17, 0.47] | 0.38 [0.12, 0.75] | 0.18 [0.11, 0.26] |
+| E2B, prompt v1 | 0.10 [0.03, 0.20] | 0.25 [0.11, 0.39] | 0.50 [0.12, 0.88] | 0.20 [0.12, 0.29] |
+| E4B, prompt v1 | 0.10 [0.03, 0.20] | 0.36 [0.19, 0.53] | 0.62 [0.25, 0.88] | 0.26 [0.18, 0.36] |
+| E2B, prompt v2 | 0.25 [0.12, 0.40] | 0.42 [0.25, 0.58] | 0.75 [0.38, 1.00] | 0.37 [0.27, 0.46] |
+| E4B, prompt v2 | 0.28 [0.15, 0.42] | 0.31 [0.17, 0.47] | 0.88 [0.62, 1.00] | 0.35 [0.25, 0.44] |
 
 Every method does far worse than on planted bugs (Figure 3). The failing tests are usually the ones written with the fix, and the changed functions are run by hundreds of other tests, so even coverage ranks them late on FastAPI.
 
-With the pre-registered prompt, the models add nothing on FastAPI: only 4 of 40 tasks had a failing test among the 30 graph candidates, and the new tests were rarely in the 600 other names. On Rich, built afterwards and never tuned on, E4B with prompt v1 beats graph distance by 19.4 points [+8.3, +33.3].
+Pooled over all 84 tasks, the pre-registered E4B re-ranker adds 9.5 points over graph distance [+3.6, +15.5]. **Why the gain is uneven.** With the pre-registered prompt the model only sees tests the graph already found. On FastAPI that list held a failing test for just 4 of 40 tasks, so the model had nothing to promote and added nothing. On Rich, where the graph does better, E4B beats graph distance by 19.4 points [+8.3, +33.3].
 
-Prompt v2 fixes the FastAPI blind spot (E4B 0.28, post hoc). We froze its held-out test before running it anywhere else, and in plain words it failed: a prompt tuned on one repository did not reliably transfer to another (Rich, E4B v2 minus graph distance +13.9 points, interval [0.0, +27.8]). E2B with v2 did transfer (+25.0 [+11.1, +38.9]), and on planted bugs v2 helps E2B (0.61 to 0.66) but hurts E4B (0.66 to 0.60).
+**A second prompt, tested honestly.** Prompt v2 also shows the model tests that share words with the change, which fixes the FastAPI blind spot (E4B 0.28, found after the fact). We then froze a held-out test on Rich before running it. It did not pass: the gain over graph distance was +13.9 points with an interval touching zero. On requests, run later and also never tuned on, v2 did best of all (E4B 0.88 against 0.50), but with only 8 tasks. A prompt tuned on one repository transferred unevenly.
 
-### 4.3 What it costs an agent
+### 4.3 Is it worth the latency?
 
 Median model time per change was 2.5 s for E2B and 13.9 s for E4B. Graph distance usually reaches a failing planted bug within a fraction of a second, so run first, the model loses on time (Figure 2).
 
@@ -125,7 +125,7 @@ Median model time per change was 2.5 s for E2B and 13.9 s for E4B. Graph distanc
 
 The latency need not be paid in sequence. In a **hybrid schedule** tests start at once in graph-distance order while the model thinks, then switch to the model's order, skipping tests already run. It was never slower on average on our suites (pooled 1.47 s against 1.49 s), and with test runtimes scaled by 10, 100 and 300 the E4B hybrid reached the first failure 9%, 11% and 14% sooner than graph distance. On the real regressions, whose suites take a median 12 to 14 s per run, E4B with prompt v2 reached the first failing test after a median 0.6 s (FastAPI) and 0.3 s (Rich) of test time, against 1.6 s and 2.9 s for graph distance. These latency analyses were not in the plan and are guides, not measurements.
 
-### 4.4 A recipe for agents
+### 4.4 What should an agent do?
 
 1. Order tests by call-graph distance from the changed functions; it costs nothing and is a strong baseline.
 2. Interleave tests that share identifiers with the changed code; on real regressions this catches tests written for the bug.
@@ -140,7 +140,7 @@ Ekstazi (Gligoric et al., 2015) selects tests from recorded file dependencies an
 
 ## 6. Limitations
 
-- **Small real sets.** 76 real regressions from two repositories give wide intervals; prompt v2 was designed after seeing the FastAPI half.
+- **Small real sets.** 84 real regressions from three repositories (only 8 from requests) give wide intervals; prompt v2 was designed after seeing the FastAPI set.
 - **Python only.** The static graph's blind spots are Python's (inheritance, decorators, dynamic attributes).
 - **Two small models, one laptop.** Latency comes from an Apple M5 with 16 GB; larger models may do better.
 - **Memorisation.** These projects may be in Gemma's training data; the bugs are new, the test names are not.

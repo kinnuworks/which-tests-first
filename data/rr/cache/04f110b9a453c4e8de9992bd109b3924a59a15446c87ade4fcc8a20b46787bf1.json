@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests.test_utils::test_works\", \"tests.test_utils::test_empty_default_credentials_ignored\", \"tests.test_utils::test_not_vulnerable_to_bad_url_parsing\"]}", "wall_s": 10.57887887954712, "prompt_tokens": 1581, "output_tokens": 54, "prompt_s": 2.002028, "gen_s": 1.900197}

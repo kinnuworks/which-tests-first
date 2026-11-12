@@ -1,0 +1,1 @@
+{"id": "requests_7205", "file": "src/requests/utils.py", "line": 234, "function": "get_netrc_auth", "kind": "real", "failing_tests": ["tests.test_utils.TestGetNetrcAuth::test_empty_default_credentials_ignored"], "all_changed": [["src/requests/utils.py", "get_netrc_auth", 234, 2]], "base_commit": "1b40fdd004bfc8ba5301bcf8a6908264e9b6b877"}

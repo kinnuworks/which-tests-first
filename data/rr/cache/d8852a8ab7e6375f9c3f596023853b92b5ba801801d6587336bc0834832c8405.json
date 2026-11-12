@@ -1,0 +1,1 @@
+{"model": "gemma4:e2b-it-qat", "content": "{\"ranked\": [\"toolz.tests::test_diff\"]}", "wall_s": 1.3627688884735107, "prompt_tokens": 2692, "output_tokens": 14, "prompt_s": 1.04626, "gen_s": 0.294116}

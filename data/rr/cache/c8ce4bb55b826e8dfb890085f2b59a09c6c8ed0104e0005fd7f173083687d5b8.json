@@ -1,0 +1,1 @@
+{"model": "gemma4:e2b-it-qat", "content": "{\"ranked\": [\"CacheMethodTest.cache\", \"CacheWrapperTest.cache\", \"CustomCacheTest.cache\", \"DecoratorTestMixin.cache\"]}", "wall_s": 2.9514570236206055, "prompt_tokens": 4697, "output_tokens": 32, "prompt_s": 2.236511, "gen_s": 0.64536}

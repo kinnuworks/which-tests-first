@@ -1,0 +1,1 @@
+{"model": "gemma4:e2b-it-qat", "content": "{\"ranked\": [\"FIFODecoratorTest.test_method_typed\"]}", "wall_s": 2.4411940574645996, "prompt_tokens": 4722, "output_tokens": 18, "prompt_s": 2.086687, "gen_s": 0.329862}

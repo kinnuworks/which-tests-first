@@ -1,0 +1,1 @@
+{"model": "gemma4:e2b-it-qat", "content": "{\"ranked\": [\"CustomCacheTest.CustomCache.setdefault\", \"_MethodDescriptor.__get__\"]}", "wall_s": 37.40803623199463, "prompt_tokens": 5050, "output_tokens": 21, "prompt_s": 2.739924, "gen_s": 0.35208}

@@ -1,0 +1,1 @@
+{"model": "gemma4:e2b-it-qat", "content": "{\"ranked\": [\"test_getsizeof_param\", \"test_getsizeof_replace_grow\", \"test_getsizeof_replace_shrink\", \"test_getsizeof_subclass\"]}", "wall_s": 2.8071420192718506, "prompt_tokens": 4900, "output_tokens": 41, "prompt_s": 2.061036, "gen_s": 0.717093}

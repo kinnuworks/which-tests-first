@@ -1,0 +1,1 @@
+{"model": "gemma4:e2b-it-qat", "content": "{\"ranked\": [\"test_curry_comparable\", \"test_curry_kwargs\", \"test_curry_call\", \"test_curry_is_like_partial\", \"test_curry_is_partial\"]}", "wall_s": 2.534130811691284, "prompt_tokens": 2304, "output_tokens": 51, "prompt_s": 1.602528, "gen_s": 0.918767}

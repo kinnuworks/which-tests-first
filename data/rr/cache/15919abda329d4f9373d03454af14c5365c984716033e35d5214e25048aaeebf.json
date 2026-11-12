@@ -1,0 +1,1 @@
+{"model": "gemma4:e2b-it-qat", "content": "{\"ranked\": [\"tests.test_cache::test_missing\", \"tests.test_cache::test_missing_getsizeof\", \"tests.test_cache::test_clear_empty\", \"tests.test_cache::test_clear\", \"tests.test_cache::test_clear_getsizeof\"]}", "wall_s": 2.6770339012145996, "prompt_tokens": 4584, "output_tokens": 67, "prompt_s": 1.447406, "gen_s": 1.191853}

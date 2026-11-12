@@ -1,0 +1,1 @@
+{"model": "gemma4:e2b-it-qat", "content": "{\"ranked\": [\"tests.test_lfu::test_maxsize_infinite\", \"tests.test_lfu::test_maxsize_negative\", \"tests.test_lfu::test_maxsize_zero\"]}", "wall_s": 2.757505178451538, "prompt_tokens": 4676, "output_tokens": 49, "prompt_s": 1.754575, "gen_s": 0.967155}
