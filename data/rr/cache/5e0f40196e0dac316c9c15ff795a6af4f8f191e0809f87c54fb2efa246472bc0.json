@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"tests\": [\"test_ttlcache_iteration\", \"test_ttlcache_iteration_with_expiry\", \"test_ttlcache_iteration_empty\", \"test_ttlcache_iteration_after_expiry\"]}", "wall_s": 2.061220169067383, "prompt_tokens": 142, "output_tokens": 50, "prompt_s": 0.325601, "gen_s": 1.729564}

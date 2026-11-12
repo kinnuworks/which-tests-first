@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"tests\": [\"test_tlr_u_cache_deletion\", \"test_tlr_u_cache_eviction_on_delete\", \"test_tlr_u_cache_size_after_delete\"]}", "wall_s": 1.9798228740692139, "prompt_tokens": 144, "output_tokens": 49, "prompt_s": 0.374599, "gen_s": 1.593396}

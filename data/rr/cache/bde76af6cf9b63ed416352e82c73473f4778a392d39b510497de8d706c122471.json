@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"tests\": [\"test_progress_stop\", \"test_stop_behavior\", \"test_stop_interrupt\", \"test_stop_during_iteration\", \"test_stop_after_completion\"]}", "wall_s": 2.1182239055633545, "prompt_tokens": 142, "output_tokens": 43, "prompt_s": 0.473091, "gen_s": 1.626502}

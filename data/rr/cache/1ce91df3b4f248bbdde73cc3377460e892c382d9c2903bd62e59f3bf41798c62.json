@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"tests\": [\"test_contains\", \"test_membership\", \"test_lookup_in_cache\", \"test_key_presence\"]}", "wall_s": 1.1943621635437012, "prompt_tokens": 143, "output_tokens": 30, "prompt_s": 0.28975, "gen_s": 0.896497}

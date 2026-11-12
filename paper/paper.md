@@ -157,11 +157,11 @@ Ekstazi (Gligoric et al., 2015), STARTS (Legunsen et al., 2017) and Google's cal
 - **Small real sets.** 84 real regressions from three repositories (only 8 from requests) give wide intervals; prompt v2 was designed after seeing the FastAPI set.
 - **Python only.** The static graph's blind spots are Python's (inheritance, decorators, dynamic attributes).
 - **Two small models, one laptop.** Latency comes from an Apple M5 with 16 GB; larger models may do better.
-- **Memorisation.** These projects may be in Gemma's training data; the bugs are new, the test names are not.
+- **Memorisation, tested.** These projects may be in Gemma's training data. In a pre-registered blind-recall probe, given only the repository and the changed function's name, Gemma named a test that exists for at most 7% of bugs and a failing test for at most 3%, far below its gains, so memorised test names do not explain them.
 
 ## 7. Reproducibility
 
-The analysis plan (`analysis_plan.md`, SHA-256 `9410...a9fd`) was committed before any method ran, the prompt v2 addendum (`c55d...7d09`) before v2 ran on Rich or the planted bugs, and the encoding-ablation addendum (`38fe...`) before that ablation ran. The public repository and Kaggle notebook contain the bugs, kill matrices, per-test runtimes, every model prompt and answer cached by hash, and the scripts; the notebook rebuilds every table and figure on CPU without calling a model (about 2.5 minutes on Kaggle). Two pipeline faults were found and fixed, with both runs kept: FastAPI prompts first overflowed a 16k context (rerun at 32k), and test names without their `[parameter]` suffix were first counted as unknown (re-scored from cache).
+The analysis plan (`analysis_plan.md`, SHA-256 `9410...a9fd`) was committed before any method ran, the prompt v2 addendum (`c55d...7d09`) before v2 ran on Rich or the planted bugs, the encoding-ablation addendum (`38fe...`) before that ablation ran, and the memorisation-probe addendum (`4ac0...`) before the probe ran. The public repository and Kaggle notebook contain the bugs, kill matrices, per-test runtimes, every model prompt and answer cached by hash, and the scripts; the notebook rebuilds every table and figure on CPU without calling a model (about 2.5 minutes on Kaggle). Two pipeline faults were found and fixed, with both runs kept: FastAPI prompts first overflowed a 16k context (rerun at 32k), and test names without their `[parameter]` suffix were first counted as unknown (re-scored from cache).
 
 ## References
 

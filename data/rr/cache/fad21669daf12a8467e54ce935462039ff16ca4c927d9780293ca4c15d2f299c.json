@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"tests\": [\"test_descriptor_get\", \"test_method_access\", \"test_attribute_access\", \"test_instance_access\"]}", "wall_s": 1.3461802005767822, "prompt_tokens": 142, "output_tokens": 32, "prompt_s": 0.344965, "gen_s": 0.990888}

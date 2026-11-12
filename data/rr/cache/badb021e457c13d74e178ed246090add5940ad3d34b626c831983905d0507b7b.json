@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"tests\": [\"test_style_clear_meta_and_links\", \"test_style_clear_meta_and_links_with_links\", \"test_style_clear_meta_and_links_with_other_styles\"]}", "wall_s": 2.5702342987060547, "prompt_tokens": 148, "output_tokens": 53, "prompt_s": 0.453401, "gen_s": 2.104447}

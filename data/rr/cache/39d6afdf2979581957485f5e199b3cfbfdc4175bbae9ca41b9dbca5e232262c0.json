@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"tests\": [\"test_t_lru_cache_expire\", \"test_lru_cache_expire_after_time\", \"test_lru_cache_expire_on_access\", \"test_lru_cache_expire_on_put\"]}", "wall_s": 2.360975980758667, "prompt_tokens": 142, "output_tokens": 58, "prompt_s": 0.413989, "gen_s": 1.934607}

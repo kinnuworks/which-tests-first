@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"tests\": [\"test_functoolz_basic_operations\", \"test_functoolz_with_complex_types\", \"test_functoolz_edge_cases\", \"test_functoolz_performance\", \"test_functoolz_with_large_inputs\"]}", "wall_s": 2.436980962753296, "prompt_tokens": 141, "output_tokens": 61, "prompt_s": 0.336956, "gen_s": 2.089952}

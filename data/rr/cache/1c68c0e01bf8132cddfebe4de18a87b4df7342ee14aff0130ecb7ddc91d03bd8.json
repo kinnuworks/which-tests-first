@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"tests\": [\"test_prompt_validation_error\", \"test_prompt_error_handling\", \"test_prompt_custom_error\", \"test_prompt_validation_failure\"]}", "wall_s": 2.3561501502990723, "prompt_tokens": 147, "output_tokens": 40, "prompt_s": 0.467325, "gen_s": 1.865322}

@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"tests\": [\"test_get_character_cell_size\", \"test_get_character_cell_size_with_width\", \"test_get_character_cell_size_with_height\"]}", "wall_s": 2.370267868041992, "prompt_tokens": 146, "output_tokens": 45, "prompt_s": 0.518841, "gen_s": 1.841324}

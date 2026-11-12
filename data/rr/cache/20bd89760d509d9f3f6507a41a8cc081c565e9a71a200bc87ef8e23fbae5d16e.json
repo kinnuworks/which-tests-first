@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"tests\": [\"test_contains\", \"test_get_key_in_cache\", \"test_key_existence\"]}", "wall_s": 1.2161667346954346, "prompt_tokens": 142, "output_tokens": 27, "prompt_s": 0.354042, "gen_s": 0.84788}

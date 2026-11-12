@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"tests\": [\"test_dicttoolz_get_factory\", \"test_dicttoolz_with_factory\", \"test_dicttoolz_factory_usage\"]}", "wall_s": 1.5862529277801514, "prompt_tokens": 140, "output_tokens": 37, "prompt_s": 0.331936, "gen_s": 1.219996}

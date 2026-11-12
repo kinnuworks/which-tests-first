@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"tests\": [\"test_instance_annotations\", \"test_functoolz_with_annotations\", \"test_partial_with_annotations\", \"test_curried_with_annotations\"]}", "wall_s": 2.0612542629241943, "prompt_tokens": 142, "output_tokens": 41, "prompt_s": 0.305336, "gen_s": 1.731555}

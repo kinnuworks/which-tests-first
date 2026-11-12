@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"tests\": [\"test_ordinal_number\", \"test_ordinal_zero\", \"test_ordinal_negative\", \"test_ordinal_large_number\", \"test_ordinal_specific_cases\"]}", "wall_s": 1.838460922241211, "prompt_tokens": 137, "output_tokens": 43, "prompt_s": 0.366112, "gen_s": 1.46109}

@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"tests\": [\"test_clear\", \"test_clear_with_items\", \"test_clear_empty_cache\"]}", "wall_s": 1.2646639347076416, "prompt_tokens": 139, "output_tokens": 27, "prompt_s": 0.358694, "gen_s": 0.898762}

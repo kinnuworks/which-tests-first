@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"tests\": [\"test_get_netrc_auth\", \"test_netrc_auth_success\", \"test_netrc_auth_failure\", \"test_netrc_auth_invalid_config\"]}", "wall_s": 2.7656409740448, "prompt_tokens": 146, "output_tokens": 46, "prompt_s": 0.352206, "gen_s": 2.401919}

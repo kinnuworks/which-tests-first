@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"tests\": [\"test_locked_info_mixin\", \"test_decorator_with_lock\", \"test_concurrent_access_with_lock\", \"test_lock_acquisition_and_release\"]}", "wall_s": 1.7244248390197754, "prompt_tokens": 143, "output_tokens": 44, "prompt_s": 0.350292, "gen_s": 1.365181}

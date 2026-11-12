@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"tests\": [\"test_is_uploadfile_or_nonable_uploadfile_annotation\", \"test_some_other_related_function\"]}", "wall_s": 1.6056733131408691, "prompt_tokens": 149, "output_tokens": 33, "prompt_s": 0.373544, "gen_s": 1.175241}

@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"tests\": [\"test_syntax_rich_console\", \"test_syntax_display_in_console\", \"test_syntax_rich_output\"]}", "wall_s": 1.7171499729156494, "prompt_tokens": 145, "output_tokens": 33, "prompt_s": 0.477449, "gen_s": 1.228593}

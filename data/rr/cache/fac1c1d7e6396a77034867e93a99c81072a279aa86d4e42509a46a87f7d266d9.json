@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"tests\": [\"test_live_stop\", \"test_live_stop_with_content\", \"test_live_stop_on_empty_live\"]}", "wall_s": 1.8936691284179688, "prompt_tokens": 142, "output_tokens": 35, "prompt_s": 0.498451, "gen_s": 1.383278}
