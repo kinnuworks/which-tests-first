@@ -1,0 +1,1 @@
+{"model": "gemma4:e2b-it-qat", "content": "{\"ranked\": [\"test_16color_terminal\", \"test_ansi_codes\", \"test_tty_compatible\", \"test_console_null_file\", \"test_dumb_terminal\"]}", "wall_s": 6.5727858543396, "prompt_tokens": 9551, "output_tokens": 43, "prompt_s": 4.859598, "gen_s": 1.599201}

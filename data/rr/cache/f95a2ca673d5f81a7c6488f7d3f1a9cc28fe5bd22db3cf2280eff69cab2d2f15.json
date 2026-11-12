@@ -1,0 +1,1 @@
+{"model": "gemma4:e2b-it-qat", "content": "{\"ranked\": [\"test_16color_terminal\", \"test_is_terminal_broken_file\"]}", "wall_s": 5.578923940658569, "prompt_tokens": 9450, "output_tokens": 24, "prompt_s": 4.682586, "gen_s": 0.666695}

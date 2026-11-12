@@ -1,0 +1,1 @@
+{"model": "gemma4:e2b-it-qat", "content": "{\"ranked\": [\"tests::inspect_builtin_function_only_python311\", \"tests::inspect_coroutine\", \"tests::inspect_module_with_class\"]}", "wall_s": 7.522372245788574, "prompt_tokens": 9150, "output_tokens": 39, "prompt_s": 5.298766, "gen_s": 2.021488}

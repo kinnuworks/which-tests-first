@@ -13,7 +13,8 @@ We report Recall@10: the share of bugs whose failing test is among the first 10 
 1. **A small local model finds the tests a code graph misses.** On 375 planted bugs, graph distance reaches 56%; with Gemma 4 E4B re-ranking, 66%. The gain comes from tests that reach the changed code through Python syntax, such as `in` calling `__contains__`.
 2. **Real regressions are much harder, but the model still helps.** On 84 real regressions replayed from the competition's own tasks in three repositories, graph distance reaches only 17%. The pre-registered E4B re-ranker reaches 26% (+9.5 points, 95% interval +3.6 to +15.5), though unevenly: no gain on FastAPI, clear gains on Rich and requests.
 3. **The provided code graph barely links tests to code.** Only 285 of its 2,752 call edges run from a test into FastAPI code.
-4. **The model's latency can be hidden.** Run in parallel with the graph-ordered tests, it never slowed the loop on average.
+4. **How the graph is described to the model does not matter; which tests it chooses does.** Writing call paths or no graph text at all into the prompt gave the same results.
+5. **The model's latency can be hidden.** Run in parallel with the graph-ordered tests, it never slowed the loop on average.
 
 ## Abstract
 
@@ -21,7 +22,7 @@ After a code change, a coding agent should run first the tests most likely to fa
 
 ## 1. Introduction
 
-Coding agents fix bugs in a loop: read, edit, run tests, repeat. This competition asks how far that loop can go with Gemma 4 on one accelerator under a time budget, and every full test run spends budget. Developers have the same problem on their own machines.
+Coding agents fix bugs in a loop: read, edit, run tests, repeat. In this competition every full test run spends a fixed time budget, and developers on laptops have the same problem.
 
 Regression test selection asks which tests to run first after a change. Classic tools use static dependencies or recorded coverage; agent scaffolds ask a large hosted model. We ask whether a small local model, given a code graph like the one the competition gives its agents, helps, and when its latency is worth paying.
 
@@ -36,7 +37,7 @@ Contributions:
 
 **Real regressions.** For each competition task whose fix edits an existing function, we check out the base commit with its own dependencies, apply the fix and its tests, then undo the fix. Tests that pass with the fix and fail without it are the ground truth. 40 FastAPI, 36 Rich and 8 requests tasks qualified (median 1 to 2 failing tests); tasks adding new code, timing out, or failing with the fix applied were dropped.
 
-**Profiles.** One clean run per repository state records each test's runtime and, with coverage.py's per-test contexts, the lines it executed.
+**Profiles.** One clean run per repository state records each test's runtime and per-test coverage.
 
 ## 3. Methods
 
@@ -50,7 +51,7 @@ Every method returns a full ordering; a partial ranking is completed in default 
 - **Provided graph and embeddings** (FastAPI): graph distance over the competition's call graph, and cosine of its 256-dimensional node embeddings.
 - **Gemma re-rank**: Gemma 4 E2B or E4B (4-bit QAT, Ollama, temperature 0) sees the diff, the function's source, its callers and callees, and candidate tests, and returns up to 15 entries. **Prompt v1** (pre-registered) gives the 30 nearest tests by graph distance plus up to 600 other test names. **Prompt v2** (written after the FastAPI real results) gives 15 graph and 15 lexical candidates plus the full list of test files. The model's list goes first, then graph distance.
 
-**Code graph.** Built from Python ASTs with `contains`, `calls` and `imports` edges, the node and edge types of the competition's graphs; calls are resolved by name.
+**Code graph.** Built from Python ASTs with the node and edge types of the competition's graphs; calls are resolved by name.
 
 **Metrics** (fixed in the plan). Recall@k: the share of bugs with a failing test in the first k (k = 1, 10, and 10% of the suite). Time to first failure: test runtime up to the first failing test, plus model time. 95% bootstrap intervals, stratified by repository, 10,000 resamples.
 
@@ -87,7 +88,7 @@ The pre-registered comparison is the paired difference in Recall@10 against grap
 | sortedcontainers | 78 | 23.5 | 16 | 0.62 | 0.83 | 0.65 | 0.77 | 0.91 |
 | FastAPI (snapshot) | 60 | 31.3 | 29 | 0.35 | 0.30 | 0.37 | 0.37 | 0.57 |
 
-The gain is largest where the static graph is blind. In cachetools, 48 of 79 bugs had no failing test reachable in the graph, largely because behaviour sits in dunder methods (`__contains__`, `__iter__`) that tests call through syntax, not by name; there E4B lifts Recall@10 from 0.42 to 0.62. For a bug in `TTLCache.__iter__`, graph distance puts the first failing test at position 412 and E4B puts `test_ttl_iter_expired` second. Across the 117 bugs the graph cannot reach, E4B proposed a failing test from outside its reach for 40. Proposals cost precision: for 135 of the 181 bugs where E4B proposed outside tests, none of them failed, and it named 174 tests that do not exist.
+The gain is largest where the static graph is blind. In cachetools, 48 of 79 bugs had no failing test reachable in the graph, largely because behaviour sits in dunder methods (`__contains__`, `__iter__`) that tests call through syntax, not by name; there E4B lifts Recall@10 from 0.42 to 0.62. For a bug in `TTLCache.__iter__`, graph distance puts the first failing test at position 412 and E4B puts `test_ttl_iter_expired` second. Across the 117 bugs the graph cannot reach, E4B found a failing test outside its reach for 40, at a cost in precision: it also named 174 tests that do not exist.
 
 On the FastAPI snapshot, the competition's provided graph reached a failing test less often than our AST graph (Recall@10 0.22 [0.12, 0.32] against 0.35 [0.23, 0.47]), and its embeddings did about as well as lexical similarity (0.32 against 0.30). Only 285 of its 2,752 call edges run from tests into FastAPI code. Adding test-to-code edges, for example by resolving calls made through the `TestClient`, would make the provided graph far more useful for this task.
 
@@ -115,17 +116,30 @@ Pooled over all 84 tasks, the pre-registered E4B re-ranker adds 9.5 points over 
 
 **A second prompt, tested honestly.** Prompt v2 also shows the model tests that share words with the change, which fixes the FastAPI blind spot (E4B 0.28, found after the fact). We then froze a held-out test on Rich before running it. It did not pass: the gain over graph distance was +13.9 points with an interval touching zero. On requests, run later and also never tuned on, v2 did best of all (E4B 0.88 against 0.50), but with only 8 tasks. A prompt tuned on one repository transferred unevenly.
 
-### 4.3 Is it worth the latency?
+### 4.3 Does it matter how the graph is described to the model?
 
-Median model time per change was 2.5 s for E2B and 13.9 s for E4B. Graph distance usually reaches a failing planted bug within a fraction of a second, so run first, the model loses on time (Figure 2).
+Work on graph reasoning with LLMs finds that the way a graph is written into the prompt changes accuracy a great deal (Fatemi, Halcrow and Perozzi, 2024; Markowitz et al., 2025). We tested this with a pre-registered ablation on Gemma 4 E2B: the same 30 candidates with no graph text, with the callers, callees and distances of prompt v1, or with each test's call path to the changed function.
+
+**Table 4.** Recall@10 by graph encoding (Gemma 4 E2B).
+
+| Set | Graph distance alone | No graph text | Names and distances (v1) | Call paths |
+|---|---|---|---|---|
+| Planted bugs (235) | 0.57 | 0.64 | 0.64 | 0.62 |
+| Rich real (36) | 0.17 | 0.25 | 0.25 | 0.25 |
+
+The encoding made no difference (paired differences within ±2 points, intervals spanning zero). Here the graph's value is in choosing which tests the model sees; the model's gain comes from reading test names and code, not from reasoning over graph structure in text.
+
+### 4.4 Is it worth the latency?
+
+Median model time per change was 2.5 s (E2B) and 13.9 s (E4B); graph distance usually reaches a failing planted bug within a fraction of a second, so run first, the model loses on time (Figure 2).
 
 ![Figure 2](paper/figs/fig2_time_to_failure.png)
 
 **Figure 2.** Median seconds until the first failing test, model time included for Gemma rows (log scale).
 
-The latency need not be paid in sequence. In a **hybrid schedule** tests start at once in graph-distance order while the model thinks, then switch to the model's order, skipping tests already run. It was never slower on average on our suites (pooled 1.47 s against 1.49 s), and with test runtimes scaled by 10, 100 and 300 the E4B hybrid reached the first failure 9%, 11% and 14% sooner than graph distance. On the real regressions, whose suites take a median 12 to 14 s per run, E4B with prompt v2 reached the first failing test after a median 0.6 s (FastAPI) and 0.3 s (Rich) of test time, against 1.6 s and 2.9 s for graph distance. These latency analyses were not in the plan and are guides, not measurements.
+The latency need not be paid in sequence. In a **hybrid schedule** tests start at once in graph-distance order while the model thinks, then switch to the model's order, skipping tests already run. It was never slower on average on our suites (pooled 1.47 s against 1.49 s), and with test runtimes scaled by 10, 100 and 300 the E4B hybrid reached the first failure 9%, 11% and 14% sooner than graph distance. On the real regressions, whose suites take a median 12 to 14 s per run, E4B with prompt v2 reached the first failing test after a median 0.6 s (FastAPI) and 0.3 s (Rich) of test time, against 1.6 s and 2.9 s for graph distance. These latency analyses were not in the plan.
 
-### 4.4 What should an agent do?
+### 4.5 What should an agent do?
 
 1. Order tests by call-graph distance from the changed functions; it costs nothing and is a strong baseline.
 2. Interleave tests that share identifiers with the changed code; on real regressions this catches tests written for the bug.
@@ -136,7 +150,7 @@ Steps 1 and 2 ship as `skills/which_tests_first`, an ADK skill in the competitio
 
 ## 5. Related work
 
-Ekstazi (Gligoric et al., 2015) selects tests from recorded file dependencies and STARTS (Legunsen et al., 2017) from static class dependencies; Google ranks tests over a hybrid call graph at scale (Regression Test Selection at Scale). Our graph-distance and coverage baselines are small versions of these. Agentless (Xia et al., 2024) asks a hosted model which tests relate to an edit; TestPrune (2025) predicts suspicious methods and minimises the suite through coverage. Both use large hosted models and judge selection only through issue resolution; we score it directly, with laptop-sized models. Mutant detection correlates with real-fault detection (Just et al., 2014); Section 4.2 shows the gap can still be large for selection.
+Ekstazi (Gligoric et al., 2015), STARTS (Legunsen et al., 2017) and Google's call-graph ranking (Regression Test Selection at Scale) are the dynamic and static families our coverage and graph-distance baselines follow. Agentless (Xia et al., 2024) asks a hosted model which tests relate to an edit; TestPrune (2025) predicts suspicious methods and minimises the suite through coverage. Both use large hosted models and judge selection only through issue resolution; we score it directly, with laptop-sized models. Mutant detection correlates with real-fault detection (Just et al., 2014); Section 4.2 shows the gap can still be large for selection.
 
 ## 6. Limitations
 
@@ -147,7 +161,7 @@ Ekstazi (Gligoric et al., 2015) selects tests from recorded file dependencies an
 
 ## 7. Reproducibility
 
-The analysis plan (`analysis_plan.md`, SHA-256 `9410...a9fd`) was committed before any method ran, and the prompt v2 addendum (`c55d...7d09`) before v2 ran on Rich or the planted bugs. The public repository and Kaggle notebook contain the bugs, kill matrices, per-test runtimes, every model prompt and answer cached by hash, and the scripts; the notebook rebuilds every table and figure on CPU without calling a model (about 2.5 minutes on Kaggle). Two pipeline faults were found and fixed, with both runs kept: FastAPI prompts first overflowed a 16k context (rerun at 32k), and test names without their `[parameter]` suffix were first counted as unknown (re-scored from cache).
+The analysis plan (`analysis_plan.md`, SHA-256 `9410...a9fd`) was committed before any method ran, the prompt v2 addendum (`c55d...7d09`) before v2 ran on Rich or the planted bugs, and the encoding-ablation addendum (`38fe...`) before that ablation ran. The public repository and Kaggle notebook contain the bugs, kill matrices, per-test runtimes, every model prompt and answer cached by hash, and the scripts; the notebook rebuilds every table and figure on CPU without calling a model (about 2.5 minutes on Kaggle). Two pipeline faults were found and fixed, with both runs kept: FastAPI prompts first overflowed a 16k context (rerun at 32k), and test names without their `[parameter]` suffix were first counted as unknown (re-scored from cache).
 
 ## References
 
@@ -157,4 +171,6 @@ The analysis plan (`analysis_plan.md`, SHA-256 `9410...a9fd`) was committed befo
 - Xia, C. S., Deng, Y., Dunn, S., and Zhang, L. (2024). Agentless: Demystifying LLM-based software engineering agents. arXiv:2407.01489.
 - When Old Meets New: Evaluating the impact of regression tests on SWE issue resolution (TestPrune) (2025). arXiv:2510.18270.
 - Regression Test Selection at Scale. Google Research. https://research.google/pubs/regression-test-selection-at-scale-2/
+- Fatemi, B., Halcrow, J., and Perozzi, B. (2024). Talk like a graph: Encoding graphs for large language models. ICLR.
+- Markowitz, E., Galiya, K., Ver Steeg, G., and Galstyan, A. (2025). KG-LLM-Bench: A scalable benchmark for evaluating LLM reasoning on textualized knowledge graphs. KnowledgeNLP Workshop, NAACL.
 - Markowitz, E., et al. (2026). Google - The Gemma 4 Developer Agent Competition. Kaggle.
