@@ -1,0 +1,1 @@
+{"model": "gemma4:e2b-it-qat", "content": "{\"ranked\": [\"tests.test_dependency_class\", \"tests.test_dependency_class\", \"tests.test_dependency_overrides\"]}", "wall_s": 15.558420896530151, "prompt_tokens": 8466, "output_tokens": 32, "prompt_s": 5.981193, "gen_s": 3.697349}

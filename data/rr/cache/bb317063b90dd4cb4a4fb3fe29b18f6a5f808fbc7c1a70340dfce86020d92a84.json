@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests.test_security_http_bearer\", \"tests.test_security_http_basic\", \"tests.test_security_http_digest\"]}", "wall_s": 18.462523937225342, "prompt_tokens": 8177, "output_tokens": 37, "prompt_s": 11.478159, "gen_s": 2.253175}

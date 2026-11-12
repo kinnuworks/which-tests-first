@@ -1,0 +1,1 @@
+{"id": "rich_3470", "file": "rich/console.py", "line": 2032, "function": "Console._write_buffer", "kind": "real", "failing_tests": ["tests.test_console::test_capture_and_record"], "all_changed": [["rich/console.py", "Console._write_buffer", 2032, 2]], "base_commit": "0ba607dc080c9f102b5ae5346bcdb70d6e9c969d"}

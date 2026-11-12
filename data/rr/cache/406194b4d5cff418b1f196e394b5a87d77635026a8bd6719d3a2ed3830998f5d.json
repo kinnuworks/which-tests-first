@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"toolz.tests.test_functoolz\", \"toolz.tests.test_num_required_args\", \"toolz.tests.test_inspect_signature_property\", \"toolz.tests.test_is_arity\"]}", "wall_s": 5.308511018753052, "prompt_tokens": 1181, "output_tokens": 56, "prompt_s": 2.183286, "gen_s": 3.088281}

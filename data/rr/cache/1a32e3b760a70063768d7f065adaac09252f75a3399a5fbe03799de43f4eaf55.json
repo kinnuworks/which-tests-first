@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests::test_stringified_annotations\", \"tests::test_stringified_annotations_simple\", \"tests::test_return_none_stringified_annotations\"]}", "wall_s": 16.14318084716797, "prompt_tokens": 6488, "output_tokens": 40, "prompt_s": 9.372205, "gen_s": 2.308598}

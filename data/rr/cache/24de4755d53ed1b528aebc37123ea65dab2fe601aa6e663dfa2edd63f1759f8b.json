@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\n  \"tests::test_naturaldelta_one_year_i18n\",\n  \"tests::test_naturaldelta_nomonths[test_input3-1 year, 35 days]\",\n  \"tests::test_naturaldelta[0-a moment]\"\n]}", "wall_s": 8.985302209854126, "prompt_tokens": 1642, "output_tokens": 68, "prompt_s": 2.205183, "gen_s": 6.501699}

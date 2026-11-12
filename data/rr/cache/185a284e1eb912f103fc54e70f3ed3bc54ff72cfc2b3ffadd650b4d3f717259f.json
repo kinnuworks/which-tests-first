@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests::test_syntax_guess_lexer\", \"tests::test_from_path\"]}", "wall_s": 11.293517827987671, "prompt_tokens": 1758, "output_tokens": 24, "prompt_s": 2.275861, "gen_s": 1.055891}

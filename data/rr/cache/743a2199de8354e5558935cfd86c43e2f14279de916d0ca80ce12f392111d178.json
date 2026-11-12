@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests.test_coverage_sorteddict\", \"tests.test_stress_sorteddict\", \"tests::test_update\"]}", "wall_s": 3.8103041648864746, "prompt_tokens": 1148, "output_tokens": 31, "prompt_s": 1.546229, "gen_s": 1.476902}

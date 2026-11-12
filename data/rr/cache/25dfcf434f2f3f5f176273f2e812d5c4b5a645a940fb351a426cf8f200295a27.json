@@ -1,0 +1,1 @@
+{"model": "gemma4:e2b-it-qat", "content": "{\"ranked\": [\"tests.test_compat\", \"tests.test_compat_params_v1\", \"tests.test_schema_ref_pydantic_v2\"]}", "wall_s": 7.397644996643066, "prompt_tokens": 6369, "output_tokens": 39, "prompt_s": 2.964228, "gen_s": 1.318038}

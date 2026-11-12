@@ -1,0 +1,1 @@
+{"id": "rich_3469", "file": "rich/markdown.py", "line": 680, "function": "Markdown.__rich_console__", "kind": "real", "failing_tests": ["tests.test_markdown::test_table_with_empty_cells"], "all_changed": [["rich/markdown.py", "Markdown.__rich_console__", 680, 2]], "base_commit": "c478588f3c228a4e86741a057c42b452d7bc6bce"}

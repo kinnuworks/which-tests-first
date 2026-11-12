@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests.test_ttl::test_ttl_expire\", \"tests.test_ttl::test_ttl_iter_expired\", \"tests.test_ttl::test_ttl_datetime\", \"tests.test_ttl::test_ttl_datetime_overflow\"]}", "wall_s": 11.368378162384033, "prompt_tokens": 1233, "output_tokens": 60, "prompt_s": 2.315353, "gen_s": 8.447061}

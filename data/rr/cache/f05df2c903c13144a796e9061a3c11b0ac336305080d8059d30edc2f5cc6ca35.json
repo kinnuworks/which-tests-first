@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests::test_upload_file[asyncio]\", \"tests::test_upload_file[trio]\", \"tests.test_tutorial.test_request_files::test_post_file[tutorial001_py310]\"]}", "wall_s": 16.892754077911377, "prompt_tokens": 8988, "output_tokens": 58, "prompt_s": 13.308679, "gen_s": 3.500042}

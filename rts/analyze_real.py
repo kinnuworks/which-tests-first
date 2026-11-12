@@ -12,7 +12,7 @@ METHODS = ["full", "name", "reach", "graphdist", "lexical", "pgraph", "pemb", "c
 LABEL = {"full": "Full suite order", "name": "Name match", "reach": "Reachability", "graphdist": "Graph distance",
          "lexical": "Lexical similarity", "pgraph": "Provided graph", "pemb": "Provided embeddings",
          "coverage": "Coverage (upper bound)", "e2b": "Gemma 4 E2B re-rank", "e4b": "Gemma 4 E4B re-rank",
-         "e2b_v2": "Gemma 4 E2B, prompt v2 (post hoc)", "e4b_v2": "Gemma 4 E4B, prompt v2 (post hoc)"}
+         "e2b_v2": "Gemma 4 E2B, prompt v2", "e4b_v2": "Gemma 4 E4B, prompt v2"}
 
 
 def first_line(path):
@@ -62,7 +62,8 @@ def main():
                 row["hit"][tag + "_v2"] = first_hit(x2["ranking"], r["failing"])
         rows.append(row)
     ms = [m for m in METHODS if all(m in r["hit"] for r in rows)]
-    print(f"## Real regressions: competition FastAPI tasks with the fix undone (n = {len(rows)} tasks)\n")
+    label = sys.argv[2] if len(sys.argv) > 2 else "FastAPI"
+    print(f"## Real regressions: competition {label} tasks with the fix undone (n = {len(rows)} tasks)\n")
     print(f"Median failing tests per task: {sorted(r['n_failing'] for r in rows)[len(rows)//2]}\n")
     print("| Method | R@1 | R@5 | R@10 |\n|---|---|---|---|")
     out = {"n": len(rows), "recall": {}}

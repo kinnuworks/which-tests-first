@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests::test_security_openid_connect\", \"tests::test_security_openid_connect_description\", \"tests::test_security_openid_connect_optional\"]}", "wall_s": 16.72079610824585, "prompt_tokens": 9265, "output_tokens": 41, "prompt_s": 13.724236, "gen_s": 2.89234}

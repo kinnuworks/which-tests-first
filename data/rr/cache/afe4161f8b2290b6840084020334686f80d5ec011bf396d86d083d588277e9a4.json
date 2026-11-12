@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests::test_console_options_update\", \"tests::test_console_width\", \"tests::test_console_null_file\", \"tests::test_detect_color_system\", \"tests::test_no_color\", \"tests::test_rich_console\"]}", "wall_s": 28.57842779159546, "prompt_tokens": 9771, "output_tokens": 64, "prompt_s": 13.383709, "gen_s": 3.913236}

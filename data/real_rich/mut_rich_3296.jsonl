@@ -1,0 +1,1 @@
+{"id": "rich_3296", "file": "rich/syntax.py", "line": 622, "function": "Syntax.__rich_console__", "kind": "real", "failing_tests": ["tests.test_syntax::test_background_color_override_includes_padding"], "all_changed": [["rich/syntax.py", "Syntax.__rich_console__", 622, 4]], "base_commit": "fde5d6eee3b0437eaecdcbf6f8b11aeab3a5d503"}

@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests.test_recording_no_stdout_and_no_stderr_files\", \"tests.test_out\", \"tests.test_file_proxy\"]}", "wall_s": 9.242991924285889, "prompt_tokens": 1773, "output_tokens": 39, "prompt_s": 2.404169, "gen_s": 1.962279}

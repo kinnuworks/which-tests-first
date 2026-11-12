@@ -1,0 +1,1 @@
+{"id": "rich_3518", "file": "rich/table.py", "line": 454, "function": "Table.add_row", "kind": "real", "failing_tests": ["tests.test_table::test_columns_highlight_added_by_add_row"], "all_changed": [["rich/table.py", "Table.add_row", 454, 2]], "base_commit": "5ba9cb56e68dcdf2db50c214d8f1412c8a50761b"}

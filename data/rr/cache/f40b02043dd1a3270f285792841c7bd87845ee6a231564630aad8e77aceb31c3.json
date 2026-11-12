@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests.test_get_character_cell_size\", \"tests.test_split_graphemes\"]}", "wall_s": 108.56489133834839, "prompt_tokens": 2230, "output_tokens": 28, "prompt_s": 13.548235, "gen_s": 6.678113}

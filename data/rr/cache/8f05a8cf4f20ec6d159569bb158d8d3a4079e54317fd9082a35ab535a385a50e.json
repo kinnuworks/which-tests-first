@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"toolz.tests::test_join\", \"toolz.tests::test_join_double_repeats\", \"toolz.tests::test_join_missing_element\"]}", "wall_s": 24.906212091445923, "prompt_tokens": 1689, "output_tokens": 43, "prompt_s": 3.543591, "gen_s": 2.236388}

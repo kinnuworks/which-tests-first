@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests::test_append_tokens\", \"tests::test_highlight_regex[<foo>-spans2]\", \"tests::test_highlight_regex[<foo: 23>-spans3]\"]}", "wall_s": 8.52906084060669, "prompt_tokens": 1382, "output_tokens": 50, "prompt_s": 1.901479, "gen_s": 2.541886}

@@ -1,0 +1,1 @@
+{"id": "rich_3953", "file": "rich/cells.py", "line": 58, "function": "get_character_cell_size", "kind": "real", "failing_tests": ["tests.test_cells::test_non_printable", "tests.test_cells::test_zwj"], "all_changed": [["rich/cells.py", "get_character_cell_size", 58, 17], ["rich/cells.py", "_cell_len", 141, 9]], "base_commit": "1d402e0c59f8765e420a5a4440eb2fca7465d1ae"}

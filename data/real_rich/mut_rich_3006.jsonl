@@ -1,0 +1,1 @@
+{"id": "rich_3006", "file": "rich/repr.py", "line": 79, "function": "auto.do_replace.auto_rich_repr", "kind": "real", "failing_tests": ["tests.test_repr::test_rich_repr_auto"], "all_changed": [["rich/repr.py", "auto.do_replace.auto_rich_repr", 79, 2]], "base_commit": "0c8bb032ad3b54a32fdb8a43f5ab457c8cd6dcb1"}

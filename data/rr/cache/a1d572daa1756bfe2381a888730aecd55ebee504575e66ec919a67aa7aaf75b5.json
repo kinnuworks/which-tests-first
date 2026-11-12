@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests::test_router_events\", \"tests::test_tutorial.test_events.test_tutorial001\", \"tests::test_tutorial.test_events.test_tutorial002\"]}", "wall_s": 18.862727880477905, "prompt_tokens": 8916, "output_tokens": 49, "prompt_s": 15.916589, "gen_s": 2.877805}

@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests.test_cached\", \"tests.test_cachedmethod\", \"tests.test_threading\"]}", "wall_s": 2.9862401485443115, "prompt_tokens": 884, "output_tokens": 26, "prompt_s": 1.215166, "gen_s": 1.486772}

@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"toolz.tests.test_functoolz\", \"toolz.tests.test_is_partial\", \"toolz.tests.test_introspect_curry_partial_py3\"]}", "wall_s": 4.45475697517395, "prompt_tokens": 914, "output_tokens": 48, "prompt_s": 1.482061, "gen_s": 2.94068}

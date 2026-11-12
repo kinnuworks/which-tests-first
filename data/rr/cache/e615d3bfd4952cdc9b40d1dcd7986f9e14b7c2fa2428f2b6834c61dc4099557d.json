@@ -1,0 +1,1 @@
+{"model": "gemma4:e2b-it-qat", "content": "{\"ranked\": [\"tests.test_router_prefix_with_template\", \"tests.test_router_redirect_slashes\", \"tests.test_include_route\", \"tests.test_include_router_defaults_overrides\"]}", "wall_s": 8.62067699432373, "prompt_tokens": 9171, "output_tokens": 52, "prompt_s": 4.487871, "gen_s": 1.58399}

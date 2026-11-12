@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests.test_tty_compatible\", \"tests.test_force_color\", \"tests.test_null_file\"]}", "wall_s": 6.690384149551392, "prompt_tokens": 1696, "output_tokens": 31, "prompt_s": 3.587019, "gen_s": 1.669006}

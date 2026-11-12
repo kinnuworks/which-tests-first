@@ -1,0 +1,1 @@
+{"id": "rich_3471", "file": "rich/text.py", "line": 1044, "function": "Text.append_tokens", "kind": "real", "failing_tests": ["tests.test_text::test_append_tokens"], "all_changed": [["rich/text.py", "Text.append_tokens", 1044, 1]], "base_commit": "e2a982d5ea747f0deb7f78e8eaa5b4be7d9194cf"}

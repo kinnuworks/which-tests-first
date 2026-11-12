@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests::test_intcomma[test_args13-1,234,567.1]\", \"tests::test_intcomma[test_args14-1,234,567.1234567000]\", \"tests::test_intcomma[test_args15-1,234,567.0]\"]}", "wall_s": 8.2672598361969, "prompt_tokens": 1728, "output_tokens": 92, "prompt_s": 3.047372, "gen_s": 4.957256}

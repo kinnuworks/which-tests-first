@@ -1,0 +1,1 @@
+{"id": "rich_3676", "file": "rich/traceback.py", "line": 408, "function": "Traceback.extract", "kind": "real", "failing_tests": ["tests.test_traceback::test_notes"], "all_changed": [["rich/traceback.py", "Traceback.extract", 408, 6], ["rich/traceback.py", "Traceback.__rich_console__", 578, 4]], "base_commit": "2b5d648b2c62960deb6439f4204ed8fa6eb3cf7b"}

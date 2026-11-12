@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"toolz.tests::test_partition_all\", \"toolz.tests.test_itertoolz\"]}", "wall_s": 4.143324851989746, "prompt_tokens": 1206, "output_tokens": 29, "prompt_s": 2.596362, "gen_s": 1.52165}

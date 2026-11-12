@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests.test_pretty\", \"tests.test_pretty_dataclass\", \"tests.test_pretty_namedtuple\"]}", "wall_s": 10.537333011627197, "prompt_tokens": 1903, "output_tokens": 31, "prompt_s": 2.528269, "gen_s": 1.490861}

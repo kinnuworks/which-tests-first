@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"toolz.tests.test_dicttoolz::test_dissoc\", \"toolz.tests::test_dissoc_agrees_on_both_sides_of_its_size_heuristic\"]}", "wall_s": 4.602540969848633, "prompt_tokens": 1094, "output_tokens": 49, "prompt_s": 1.885209, "gen_s": 2.645849}

@@ -1,0 +1,1 @@
+{"model": "gemma4:e2b-it-qat", "content": "{\"ranked\": [\"tests.test_router_prefix_with_template\", \"tests.test_path_operation_advanced_configurations.test_tutorial001\", \"tests.test_path_operation_advanced_configurations.test_tutorial002\"]}", "wall_s": 8.75971007347107, "prompt_tokens": 9187, "output_tokens": 57, "prompt_s": 4.405567, "gen_s": 1.821533}

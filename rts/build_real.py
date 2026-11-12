@@ -21,9 +21,13 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 W = Path(__file__).resolve().parent.parent
-REPO = W / "fastapi"
-OUT = W / "data" / "real"
-PYF = str(W / ".venv-fastapi" / "bin" / "python")
+REPO = W / os.environ.get("RT_REPO", "fastapi")
+PKG = os.environ.get("RT_PKG", "fastapi")
+OUT = W / "data" / os.environ.get("RT_OUT", "real")
+PYF = str(W / os.environ.get("RT_VENV", ".venv-fastapi") / "bin" / "python")
+REPONAME = os.environ.get("RT_REPONAME", "fastapi/fastapi")
+FINAL = os.environ.get("RT_FINAL", "f1d750fddad90e2faad6c3cc5c85c7687b787e89")
+V2 = os.environ.get("RT_V2") == "1"
 PY = str(W / ".venv" / "bin" / "python")
 
 
@@ -75,7 +79,7 @@ def changed_functions(patch):
         elif cur:
             newline += 1
     for f, lines in touched.items():
-        if not f.startswith("fastapi/") or not f.endswith(".py"):
+        if not f.startswith(PKG + "/") or not f.endswith(".py"):
             continue
         src = (REPO / f).read_text()
         spans = []
@@ -106,7 +110,7 @@ def main():
     tasks = [json.loads(l) for l in open(sys.argv[1])]
     max_tasks = int(sys.argv[2])
     OUT.mkdir(parents=True, exist_ok=True)
-    fa = sorted([t for t in tasks if t["repo"] == "fastapi/fastapi"], key=lambda t: t["created_at"], reverse=True)
+    fa = sorted([t for t in tasks if t["repo"] == REPONAME], key=lambda t: t["created_at"], reverse=True)
     log = open(OUT / "build.log", "a")
     kept = len(list(OUT.glob("mut_*.jsonl")))
     for t in fa:
@@ -116,7 +120,7 @@ def main():
         if (OUT / f"mut_{tid}.jsonl").exists() or (OUT / f"skip_{tid}").exists():
             continue
         files = re.findall(r"^\+\+\+ b/(\S+)", t["patch"], re.M)
-        code_files = [f for f in files if f.startswith("fastapi/")]
+        code_files = [f for f in files if f.startswith(PKG + "/")]
         new_files = re.findall(r"^--- /dev/null|^@@ -0,0 ", t["patch"], re.M)
         if not code_files or new_files:
             (OUT / f"skip_{tid}").write_text("no fastapi/ edit or adds files")
@@ -132,11 +136,11 @@ def main():
             continue
         # install this commit's own pinned dependencies so the suite runs as it did upstream
         env_sync = dict(os.environ, UV_PROJECT_ENVIRONMENT=str(W / ".venv-fastapi"))
-        if (REPO / "uv.lock").exists():
+        if REPONAME == "fastapi/fastapi" and (REPO / "uv.lock").exists():
             subprocess.run(["uv", "sync", "-q", "--group", "tests", "--extra", "all"], cwd=REPO, env=env_sync, capture_output=True)
         elif (REPO / "requirements-tests.txt").exists():
             subprocess.run(["uv", "pip", "install", "-q", "-p", PYF, "-e", ".[all]", "-r", "requirements-tests.txt"], cwd=REPO, capture_output=True)
-        subprocess.run(["uv", "pip", "install", "-q", "-p", PYF, "pytest-xdist", "pytest-cov", "networkx", "scikit-learn"], cwd=REPO, capture_output=True)
+        subprocess.run(["uv", "pip", "install", "-q", "-p", PYF, "-e", ".", "pytest-xdist", "pytest-cov", "networkx", "scikit-learn"], cwd=REPO, capture_output=True)
         funcs = changed_functions(t["patch"])
         # keep only functions that already exist at base_commit (a regression needs prior behaviour)
         def base_quals(path):
@@ -195,14 +199,16 @@ def main():
         prof = OUT / f"prof_{tid}"
         env = dict(os.environ, COVERAGE_CORE="ctrace", PYTHONPATH=str(REPO),
                    PYTEST_ADDOPTS="-W ignore::pytest_cov.CentralCovContextWarning -W ignore::coverage.exceptions.CoverageWarning")
-        subprocess.run(["bash", str(W / "infra" / "profile_tests.sh"), str(REPO), "fastapi", str(prof)],
-                       capture_output=True, env=dict(env, PATH=str(W / ".venv-fastapi" / "bin") + ":" + os.environ["PATH"]))
+        subprocess.run(["bash", str(W / "infra" / "profile_tests.sh"), str(REPO), PKG, str(prof)],
+                       capture_output=True, env=dict(env, PATH=str(Path(PYF).parent) + ":" + os.environ["PATH"]))
+        if Path(str(prof) + ".coverage").exists() is False and (REPO / ".coverage").exists():
+            (REPO / ".coverage").rename(str(prof) + ".coverage")
         cov = REPO / "coverage" / ".coverage"
         if cov.exists():
             cov.rename(str(prof) + ".coverage")
         rk = OUT / f"rank_{tid}.jsonl"
         subprocess.run([PYF, str(W / "infra" / "select_tests.py"), str(REPO), str(mp), str(prof), str(rk)], capture_output=True)
-        C = f"fastapi_{t['base_commit']}"
+        C = f"{PKG}_{t['base_commit']}"
         gj, ez = W / "comp" / "graphs" / f"{C}.json", W / "comp" / "embeddings" / f"{C}.npz"
         for p in (gj, ez):
             if not p.exists():
@@ -214,12 +220,18 @@ def main():
             tag = model.split(":")[1].split("-")[0]
             subprocess.run([PY, str(W / "infra" / "rerank.py"), str(REPO), str(rk), str(mp), model,
                             str(OUT / f"rr_{tag}_{tid}.jsonl"), str(W / "data" / "rr" / "cache")], capture_output=True)
+        if V2:
+            for model in ("gemma4:e2b-it-qat", "gemma4:e4b-it-qat"):
+                tag = model.split(":")[1].split("-")[0]
+                subprocess.run([PY, str(W / "infra" / "rerank2.py"), str(REPO), str(rk), str(mp), model,
+                                str(OUT / f"rr2_{tag}_{tid}.jsonl"), str(W / "data" / "rr" / "cache")], capture_output=True)
         kept += 1
         print(f"{tid}: kept ({q} in {f}, {len(caught)} failing tests, fixed-state failures {len(fixed_fail)})", file=log, flush=True)
-    sh(["git", "checkout", "-qf", "f1d750fddad90e2faad6c3cc5c85c7687b787e89"])
+    sh(["git", "checkout", "-qf", FINAL])
     sh(["git", "clean", "-fdq"])
-    subprocess.run(["uv", "sync", "-q", "--group", "tests", "--extra", "all"], cwd=REPO,
-                   env=dict(os.environ, UV_PROJECT_ENVIRONMENT=str(W / ".venv-fastapi")), capture_output=True)
+    if REPONAME == "fastapi/fastapi":
+        subprocess.run(["uv", "sync", "-q", "--group", "tests", "--extra", "all"], cwd=REPO,
+                       env=dict(os.environ, UV_PROJECT_ENVIRONMENT=str(W / ".venv-fastapi")), capture_output=True)
     subprocess.run(["uv", "pip", "install", "-q", "-p", PYF, "pytest-xdist", "pytest-cov", "networkx", "scikit-learn"], cwd=REPO, capture_output=True)
     print("REAL_DONE", file=log, flush=True)
 

@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests::test_nested_router\", \"tests::test_include_empty\", \"tests::test_router_include_context\"]}", "wall_s": 17.04956316947937, "prompt_tokens": 9663, "output_tokens": 33, "prompt_s": 14.3045, "gen_s": 2.672929}

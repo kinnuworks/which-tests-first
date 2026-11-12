@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"1. toolz.tests::test_instanceproperty\", \"toolz.tests.test_functoolz\"]}", "wall_s": 2.900643825531006, "prompt_tokens": 783, "output_tokens": 29, "prompt_s": 1.444738, "gen_s": 1.379202}

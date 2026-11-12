@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests::test_is_uploadfile_sequence_annotation\", \"tests::test_multiple_annotations\", \"tests::test_complex\"]}", "wall_s": 26.012470960617065, "prompt_tokens": 8903, "output_tokens": 34, "prompt_s": 12.782563, "gen_s": 11.8587}

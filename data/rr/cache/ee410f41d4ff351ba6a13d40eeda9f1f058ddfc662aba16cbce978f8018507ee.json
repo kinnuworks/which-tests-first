@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"toolz.tests.test_merge_sorted\", \"toolz.tests.test_topk\", \"toolz.tests.test_merge_with_non_dict_mappings\"]}", "wall_s": 4.36455512046814, "prompt_tokens": 1035, "output_tokens": 45, "prompt_s": 1.821019, "gen_s": 2.516074}

@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests::test_root_path_does_not_persist_across_requests\", \"tests::test_multiple_different_root_paths_do_not_accumulate\", \"tests.test_tutorial.test_behind_a_proxy::test_main\"]}", "wall_s": 21.243680000305176, "prompt_tokens": 9353, "output_tokens": 62, "prompt_s": 13.225476, "gen_s": 3.801426}

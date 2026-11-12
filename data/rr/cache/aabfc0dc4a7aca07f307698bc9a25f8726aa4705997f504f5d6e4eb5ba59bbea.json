@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests::test_fractional[2.9999999-3]\", \"tests::test_fractional[0.9999999-1]\", \"tests::test_fractional[2.0-2]\"]}", "wall_s": 5.740383863449097, "prompt_tokens": 1412, "output_tokens": 59, "prompt_s": 2.363119, "gen_s": 3.168425}

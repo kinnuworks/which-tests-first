@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests::test_bisect_key_left\", \"tests::test_bisect_key\", \"tests::test_bisect_left\"]}", "wall_s": 9.666830778121948, "prompt_tokens": 951, "output_tokens": 36, "prompt_s": 1.496535, "gen_s": 1.907739}

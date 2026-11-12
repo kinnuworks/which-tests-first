@@ -1,0 +1,1 @@
+{"model": "gemma4:e2b-it-qat", "content": "{\"ranked\": [\"tests.test_deprecated_openapi_prefix\", \"tests.test_pydantic_v1_deprecation_warnings\"]}", "wall_s": 7.741611957550049, "prompt_tokens": 8733, "output_tokens": 31, "prompt_s": 4.314765, "gen_s": 0.849665}

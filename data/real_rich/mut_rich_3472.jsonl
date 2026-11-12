@@ -1,0 +1,1 @@
+{"id": "rich_3472", "file": "rich/pretty.py", "line": 784, "function": "traverse._traverse", "kind": "real", "failing_tests": ["tests.test_pretty::test_dataclass_no_attribute"], "all_changed": [["rich/pretty.py", "traverse._traverse", 784, 4]], "base_commit": "b6f2f7aa5b27f612f391cd28212aff51ad0d42d1"}

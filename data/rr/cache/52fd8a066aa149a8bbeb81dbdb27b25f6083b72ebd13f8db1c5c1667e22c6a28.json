@@ -1,0 +1,1 @@
+{"model": "gemma4:e2b-it-qat", "content": "{\"ranked\": [\"tests.test_patch\", \"tests.test_patch_all\", \"tests.test_tutorial.test_body_updates::test_patch_all[tutorial002_py310]\"]}", "wall_s": 5.576997995376587, "prompt_tokens": 9913, "output_tokens": 50, "prompt_s": 3.996102, "gen_s": 1.440828}

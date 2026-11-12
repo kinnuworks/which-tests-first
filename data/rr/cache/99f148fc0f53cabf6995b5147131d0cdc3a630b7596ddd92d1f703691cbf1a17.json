@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests::test_multiple_annotations\", \"tests::test_annotated\", \"tests::test_pydanticv1\"]}", "wall_s": 17.770039081573486, "prompt_tokens": 7418, "output_tokens": 32, "prompt_s": 10.650919, "gen_s": 1.801889}

@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests::test_security_scopes_sub_dependency\", \"tests::test_security_scopes_dont_propagate\", \"tests::test_security_api_key_cookie\"]}", "wall_s": 47.90838289260864, "prompt_tokens": 6890, "output_tokens": 44, "prompt_s": 11.147139, "gen_s": 8.87443}

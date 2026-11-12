@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests::test_precisedelta\", \"tests::test_precisedelta_bogus_call\", \"tests::test_precisedelta_custom_format\", \"tests::test_precisedelta_multiple_units\", \"tests::test_precisedelta_one_unit_enough\"]}", "wall_s": 9.688208103179932, "prompt_tokens": 1671, "output_tokens": 68, "prompt_s": 3.051337, "gen_s": 6.351754}

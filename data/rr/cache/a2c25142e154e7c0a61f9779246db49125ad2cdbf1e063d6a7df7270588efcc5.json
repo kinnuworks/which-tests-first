@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests::test_parameterless_with_scopes\", \"tests::test_parameterless_without_scopes\", \"tests::test_two_scopes\"]}", "wall_s": 15.310400009155273, "prompt_tokens": 8547, "output_tokens": 37, "prompt_s": 12.335392, "gen_s": 2.883351}

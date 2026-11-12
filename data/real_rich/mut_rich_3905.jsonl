@@ -1,0 +1,1 @@
+{"id": "rich_3905", "file": "rich/progress.py", "line": 1175, "function": "Progress.stop", "kind": "real", "failing_tests": ["tests.test_progress::test_no_output_if_progress_is_disabled_non_interactive"], "all_changed": [["rich/progress.py", "Progress.stop", 1175, 7]], "base_commit": "96dd4b60e3a7c647c43a85ad375afa690b3bb85b"}

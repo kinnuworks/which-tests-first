@@ -1,0 +1,1 @@
+{"id": "rich_3777", "file": "rich/console.py", "line": 736, "function": "Console.__init__", "kind": "real", "failing_tests": ["tests.test_console::test_tty_interactive"], "all_changed": [["rich/console.py", "Console.__init__", 736, 8], ["rich/diagnose.py", "report", 29, 1]], "base_commit": "49117ced6648a432d85951f72dce777038f6ce09"}

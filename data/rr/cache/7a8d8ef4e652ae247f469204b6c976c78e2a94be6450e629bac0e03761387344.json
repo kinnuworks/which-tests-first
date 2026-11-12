@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests::test_intword[test_args0-0]\", \"tests::test_intword[test_args1-100]\", \"tests::test_intword[test_args2--100]\"]}", "wall_s": 5.698312044143677, "prompt_tokens": 1605, "output_tokens": 54, "prompt_s": 2.529895, "gen_s": 2.88347}

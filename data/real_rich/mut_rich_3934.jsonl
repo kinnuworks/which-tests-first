@@ -1,0 +1,1 @@
+{"id": "rich_3934", "file": "rich/live.py", "line": 169, "function": "Live.stop", "kind": "real", "failing_tests": ["tests.test_live::test_live_empty"], "all_changed": [["rich/live.py", "Live.stop", 169, 6]], "base_commit": "6764b24739b580c0c32ff5ef0b971ed4cfcf4f75"}

@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests::test_serialize_sequence_value_with_none_first_in_union\", \"tests::test_serialize_sequence_value_with_optional_list\", \"tests::test_serialize_sequence_value_with_optional_list_pipe_union\"]}", "wall_s": 42.08034682273865, "prompt_tokens": 9095, "output_tokens": 63, "prompt_s": 15.965355, "gen_s": 21.619788}

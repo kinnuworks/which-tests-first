@@ -1,0 +1,1 @@
+{"id": "rich_3718", "file": "rich/panel.py", "line": 149, "function": "Panel.__rich_console__", "kind": "real", "failing_tests": ["tests.test_panel::test_title_text_with_panel_background"], "all_changed": [["rich/panel.py", "Panel.__rich_console__", 149, 7]], "base_commit": "7d36119f8378b36129502c3281a7faffef837e02"}

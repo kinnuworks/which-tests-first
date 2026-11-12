@@ -1,13 +1,11 @@
-**In one sentence:** after a code change, a small local Gemma 4 model re-ranks tests chosen from a code graph, so a failing test lands in the first 10 for 66% of planted bugs instead of 56%; on 40 real FastAPI regressions it adds nothing, which shows how much planted bugs flatter test selection.
-
-**Why it is a new application:** in this competition code graphs and embeddings are used to find where to edit. We use them to decide which tests to run first after an edit, including on the competition's FastAPI snapshot with its provided graph and embeddings, and we turn the competition's tasks into real-regression replays.
+**Summary.** A new use of code graphs: deciding which tests to run first after an edit. A small local Gemma 4 model lifts planted-bug Recall@10 from 56% to 66%; on 76 real regressions replayed from the competition's own tasks the picture is harder and more mixed, and we report all of it.
 
 
 *Dhiraj Kavuri*
 
 ## Abstract
 
-A coding agent on a laptop checks its edits by running tests, and full runs are slow. We study regression test selection for this setting: after a change, order the tests so a failing one comes early. We plant 375 single-operator bugs in five Python repositories, including the competition's FastAPI snapshot (3,207 tests), and keep each bug only if the repository's own tests catch it. Graph distance in a static call graph puts a failing test in the first 10 for 56% of bugs; Gemma 4 E2B and E4B re-ranking raise this to 61% and 66% (paired gains of 5.6 and 10.4 points, 95% intervals above zero), mostly by finding tests the graph cannot reach, such as tests that call dunder methods through Python syntax. The competition's provided graph reaches fewer failing tests than a plain AST graph. On 40 real regressions, made by undoing real FastAPI fixes from the competition's tasks, every method does far worse (Recall@10 at most 0.12) and the models add nothing: planted bugs overstate test selection. Started in parallel with graph-distance tests, the model never slows the loop and saves time once suites run for minutes. The analysis plan was hashed before any method ran; a public notebook rebuilds every number from cached model answers.
+A coding agent on a laptop checks its edits by running tests, and full runs are slow. We study regression test selection for this setting: after a change, order the tests so a failing one comes early. On 375 single-operator bugs planted in five Python repositories, including the competition's FastAPI snapshot, graph distance in a static call graph puts a failing test in the first 10 for 56% of bugs; Gemma 4 E2B and E4B re-ranking raise this to 61% and 66% (paired gains of 5.6 and 10.4 points, intervals above zero), mostly by finding tests the graph cannot reach. The competition's provided graph reaches fewer failing tests than a plain AST graph. We then replay 76 real regressions by undoing real fixes from the competition's FastAPI and Rich tasks. Every method does far worse; the pre-registered prompt adds nothing on FastAPI but E4B gains 19 points on held-out Rich, and a second prompt designed on FastAPI did not pass its pre-registered held-out test. Started in parallel with graph-distance tests, the model never slows the loop. Analysis plans were hashed before the runs they cover; a public notebook rebuilds every number from cached model answers.
 
 ## 1. Introduction
 
@@ -16,7 +14,7 @@ Coding agents fix bugs in a loop: read, edit, run tests, repeat. This competitio
 Regression test selection asks which tests to run first after a change. Classic tools use static dependencies or recorded coverage; agent scaffolds ask a large hosted model. We ask whether a small local model, given a code graph like the one the competition gives its agents, helps, and when its latency is worth paying. The task suits a small model: it ranks a few dozen candidates, and the static graph has blind spots (inheritance, decorators, syntax-driven calls) where reading code helps.
 
 Contributions:
-1. 375 planted bugs in five repositories and 40 real FastAPI regressions replayed from the competition's tasks, with full kill matrices (which tests fail for each bug), released with the code that rebuilds them.
+1. 375 planted bugs in five repositories and 76 real regressions replayed from the competition's FastAPI and Rich tasks, with full kill matrices (which tests fail for each bug), released with the code that rebuilds them.
 2. Six non-model methods, the competition's graph and embeddings, and two Gemma 4 sizes compared on the same bugs, with an analysis plan fixed in advance.
 3. Evidence that planted bugs overstate test selection, and a schedule under which the model's latency costs nothing.
 
@@ -84,11 +82,11 @@ The gain is uneven across repositories (Table 2). It is largest where the static
 
 ### 4.2 What the model adds: tests the graph cannot reach
 
-Across the 117 bugs where the static graph reaches no failing test, E4B proposed a failing test from outside the graph's reach for 40 and E2B for 18. Typical cases: a bug in `TTLCache.__iter__`, where graph distance puts the first failing test at position 412 and E4B puts `test_ttl_iter_expired` second; a bug in `TLRUCache.__contains__` (position 347 vs 5); and `typedmethodkey`, reached by name in a test the graph did not link (position 253 vs 2). Proposals cost precision. E4B proposed outside tests for 181 bugs, and for 135 of those none of its proposals failed. It also named 174 tests that do not exist, and 28 of its answers (of 375) were not valid JSON. E2B proposed less often and was right less often.
+For the 117 planted bugs where the static graph reaches no failing test, E4B proposed a failing test from outside its reach for 40 and E2B for 18. For a bug in `TTLCache.__iter__`, graph distance puts the first failing test at position 412 and E4B puts `test_ttl_iter_expired` second; for `TLRUCache.__contains__` it is 347 against 5. Proposals cost precision: E4B proposed outside tests for 181 bugs and none failed in 135 of them, named 174 tests that do not exist, and returned invalid JSON 28 times in 375.
 
 ### 4.3 The provided code graph and embeddings
 
-On the FastAPI snapshot we also ranked tests with the competition's own graph and embeddings (the changed function was in both for 55 of 60 bugs). The provided graph reached a failing test less often than our AST graph (Recall@10 0.22 [0.12, 0.32] vs 0.35 [0.23, 0.47]): of its 2,752 call edges only 285 run from tests into FastAPI code. The provided embeddings did about as well as lexical similarity (0.32 vs 0.30). Neither model improved on graph distance here (both 0.37), while coverage reached 0.57. A likely reason, which we did not test: most FastAPI tests go through the `TestClient`, so the path from a test to the changed function runs through the framework's own request handling, which a name-resolved graph does not capture, and the model's 30-test shortlist comes from that graph.
+On the FastAPI snapshot we also ranked tests with the competition's own graph and embeddings. The provided graph reached a failing test less often than our AST graph (Recall@10 0.22 [0.12, 0.32] against 0.35 [0.23, 0.47]): only 285 of its 2,752 call edges run from tests into FastAPI code. The provided embeddings did about as well as lexical similarity (0.32 against 0.30). Neither model beat graph distance here (both 0.37), while coverage reached 0.57, plausibly because most FastAPI tests reach the changed code through the `TestClient` and the framework's request handling, which a name-resolved graph does not see.
 
 ### 4.4 When is the model worth its latency?
 
@@ -104,19 +102,23 @@ The latency need not be paid in sequence. In a **hybrid schedule** tests start a
 
 ### 4.5 Real regressions
 
-To test real bugs we used the competition's FastAPI tasks. For each task whose fix edits an existing function, we checked out the base commit with its pinned dependencies, applied the fix and its tests, then undid the fix; tests that pass with the fix and fail without it are the ground truth. 40 tasks qualified (median 2 failing tests); tasks adding new code, timing out or failing with the fix were dropped. Coverage here spans the whole changed function, since fixes often start in a signature line run only at import.
+To test real bugs we replayed the competition's tasks for two repositories. For each task whose fix edits an existing function, we checked out the base commit with its dependencies, applied the fix and its tests, then undid the fix; tests that pass with the fix and fail without it are the ground truth. 40 FastAPI and 36 Rich tasks qualified (median 1 to 2 failing tests); tasks adding new code, timing out or failing with the fix were dropped. Coverage here spans the whole changed function.
 
-**Table 3.** 40 real FastAPI regressions (fix undone). 95% bootstrap intervals over tasks.
+**Table 3.** Real regressions (fix undone): Recall@10 with 95% bootstrap intervals over tasks, and median rank of the first failing test.
 
-| Method | R@10 | R@10% of suite | Median rank of first failing test |
-|---|---|---|---|
-| Graph distance | 0.10 [0.03, 0.20] | 0.45 [0.30, 0.60] | 422 |
-| Lexical similarity | 0.12 [0.03, 0.23] | 0.60 [0.45, 0.75] | 217 |
-| Provided graph | 0.00 | 0.20 [0.07, 0.33] | 736 |
-| Coverage | 0.03 [0.00, 0.07] | 0.28 [0.15, 0.42] | 566 |
-| Gemma 4 E2B / E4B | 0.10 [0.03, 0.20] | 0.42 [0.28, 0.57] | 422 |
+| Method | FastAPI (40) | rank | Rich (36) | rank |
+|---|---|---|---|---|
+| Graph distance | 0.10 [0.03, 0.20] | 422 | 0.17 [0.06, 0.31] | 346 |
+| Lexical similarity | 0.12 [0.03, 0.23] | 217 | 0.25 [0.11, 0.39] | 34 |
+| Coverage | 0.03 [0.00, 0.07] | 566 | 0.31 [0.17, 0.47] | 21 |
+| E2B, prompt v1 | 0.10 [0.03, 0.20] | 422 | 0.25 [0.11, 0.39] | 313 |
+| E4B, prompt v1 | 0.10 [0.03, 0.20] | 422 | 0.36 [0.19, 0.53] | 189 |
+| E2B, prompt v2 | 0.25 [0.12, 0.40] | 189 | 0.42 [0.25, 0.58] | 27 |
+| E4B, prompt v2 | 0.28 [0.15, 0.42] | 199 | 0.31 [0.17, 0.47] | 21 |
 
-Every method does far worse than on planted bugs, and the models add nothing over graph distance. The tests that catch a real regression are usually the ones written with the fix, and the changed functions (routing, dependency resolution, OpenAPI generation) are run by hundreds of other tests, so even coverage ranks them late. Only 4 of 40 tasks had a failing test among the 30 graph candidates the model sees, and the list of other test names it gets is cut at 600 of about 3,200. Lexical similarity does best here, plausibly because new tests share words with the code they target. The conclusion we draw is about evaluation as much as method: planted-bug benchmarks overstate test selection, and real-fix replays like this one are cheap to build from SWE-style task sets.
+Every method does far worse than on planted bugs. The failing tests are usually the ones written with the fix, and the changed functions are run by hundreds of other tests, so coverage ranks them late on FastAPI. With the pre-registered prompt (v1), the models add nothing on FastAPI, where only 4 of 40 tasks had a failing test among the 30 graph candidates and the list of other names was cut at 600 of about 3,200. On Rich, which we built afterwards and did not tune on, E4B with prompt v1 beats graph distance by 19.4 points [+8.3, +33.3].
+
+From the FastAPI diagnosis we wrote prompt v2: 15 candidates from graph distance and 15 from lexical similarity, and the full list of test files. We froze an addendum before running it anywhere else. On FastAPI (post hoc) it lifts E4B to 0.28. On held-out Rich, the pre-registered test, E4B v2 minus graph distance, gave +13.9 points with an interval of [0.0, +27.8], so it is not confirmed; E2B v2 gained +25.0 [+11.1, +38.9]. On the planted bugs v2 helps E2B (0.61 to 0.66) and hurts E4B (0.66 to 0.60). No prompt wins everywhere, lexical similarity is a strong cheap baseline on real regressions, and planted-bug benchmarks overstate how well any method selects tests.
 
 ## 5. Related work
 
@@ -128,15 +130,15 @@ Every method does far worse than on planted bugs, and the models add nothing ove
 
 ## 6. Limitations
 
-- **Planted bugs and one real set.** The model's gains are on planted bugs; on 40 real FastAPI regressions it adds nothing. The real set is one repository and small.
+- **Small real sets.** 76 real regressions from two repositories give wide intervals, and the second prompt was designed after seeing the FastAPI half.
 - **Python only, five repositories.** The static graph's blind spots are Python's (inheritance, decorators, dynamic attributes). Languages with explicit types would give a denser graph and likely a smaller gap for the model.
-- **One prompt, two small models.** We did not tune the prompt after seeing results. A better prompt or a larger model may do better; our numbers are a floor for this design.
+- **Two prompts, two small models.** Prompt v1 was fixed in advance; v2 was written after the FastAPI real results and is labelled so. Larger models may do better.
 - **Latency is hardware-specific.** Model times come from one Apple M5 laptop with 16 GB of memory.
 - **Memorisation.** These popular projects may be in Gemma's training data; the bugs are new, the test names are not.
 
 ## 7. Reproducibility
 
-The analysis plan (`analysis_plan.md`) was committed with SHA-256 `941004144a033e7b4edb5a011ad0ff34ab65da29c7ca4eaecf6deab4b74ca9fd` before any selection method ran. The public notebook (Kaggle, linked from the writeup) and the GitHub repository contain the planted bugs, kill matrices, per-test runtimes and coverage, every model prompt and answer (cached by prompt hash), and the scripts. Running it on CPU rebuilds every table and figure without calling a model. Two pipeline faults were found and fixed during the study, and both runs are kept: FastAPI prompts first overflowed a 16k context (raised to 32k and rerun), and test names given without their `[parameter]` suffix were first counted as unknown (now expanded to all variants and re-scored from cache). Re-running the models needs Ollama with `gemma4:e2b-it-qat` and `gemma4:e4b-it-qat`.
+The analysis plan (`analysis_plan.md`, SHA-256 `9410...a9fd`) was committed before any selection method ran, and an addendum for prompt v2 (`analysis_plan_addendum_v2.md`, SHA-256 `c55d...7d09`) before v2 ran on Rich or the planted bugs. The public notebook (Kaggle, linked from the writeup) and the GitHub repository contain the planted bugs, kill matrices, per-test runtimes and coverage, every model prompt and answer (cached by prompt hash), and the scripts. Running it on CPU rebuilds every table and figure without calling a model. Two pipeline faults were found and fixed during the study, and both runs are kept: FastAPI prompts first overflowed a 16k context (raised to 32k and rerun), and test names given without their `[parameter]` suffix were first counted as unknown (now expanded to all variants and re-scored from cache). Re-running the models needs Ollama with `gemma4:e2b-it-qat` and `gemma4:e4b-it-qat`.
 
 ## References
 

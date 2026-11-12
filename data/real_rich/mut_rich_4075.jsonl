@@ -1,0 +1,1 @@
+{"id": "rich_4075", "file": "rich/console.py", "line": 2224, "function": "Console.save_text", "kind": "real", "failing_tests": ["tests.test_console::test_print_empty_with_end"], "all_changed": [["rich/console.py", "Console.print", 1690, 5], ["rich/console.py", "Console.save_text", 2224, 8]], "base_commit": "1fc7cb210ae52eb099df39818ddb9569e5b14c7b"}

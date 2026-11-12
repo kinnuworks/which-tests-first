@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests::test_put_no_body\", \"tests::test_put_no_body_with_body\", \"tests.test_tutorial.test_bigger_applications::test_put\"]}", "wall_s": 16.760955810546875, "prompt_tokens": 9949, "output_tokens": 47, "prompt_s": 13.512275, "gen_s": 3.123928}

@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests.test_file_and_form_order_issue_9116\", \"tests.test_forms_from_non_typing_sequences\", \"tests.test_tutorial.test_request_files.test_tutorial001\"]}", "wall_s": 18.477957248687744, "prompt_tokens": 6726, "output_tokens": 59, "prompt_s": 8.953845, "gen_s": 3.499399}

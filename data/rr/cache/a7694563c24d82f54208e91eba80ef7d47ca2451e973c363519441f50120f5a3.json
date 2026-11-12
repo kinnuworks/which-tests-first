@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests::test_prompt_str\", \"tests::test_prompt_str_case_insensitive\", \"tests::test_prompt_confirm_default\", \"tests::test_prompt_confirm_no\", \"tests::test_prompt_confirm_yes\"]}", "wall_s": 12.309791088104248, "prompt_tokens": 9412, "output_tokens": 59, "prompt_s": 6.703948, "gen_s": 1.66715}

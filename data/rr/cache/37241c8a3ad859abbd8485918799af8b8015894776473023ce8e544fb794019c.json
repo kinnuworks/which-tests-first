@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests::test_router_circular_import\", \"tests::test_nested_router\", \"tests::test_include_router_defaults_overrides\"]}", "wall_s": 23.23471999168396, "prompt_tokens": 9345, "output_tokens": 38, "prompt_s": 13.936531, "gen_s": 2.45889}

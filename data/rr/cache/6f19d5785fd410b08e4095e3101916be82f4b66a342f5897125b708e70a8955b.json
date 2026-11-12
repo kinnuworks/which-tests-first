@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests::test_typeadapter\", \"tests::test_model_field_default_required\", \"tests::test_tutorial.test_body_fields.test_tutorial001\"]}", "wall_s": 17.19022798538208, "prompt_tokens": 7179, "output_tokens": 45, "prompt_s": 10.0337, "gen_s": 2.629281}

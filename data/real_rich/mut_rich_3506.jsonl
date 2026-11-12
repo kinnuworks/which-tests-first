@@ -1,0 +1,1 @@
+{"id": "rich_3506", "file": "rich/segment.py", "line": 112, "function": "Segment._split_cells", "kind": "real", "failing_tests": ["tests.test_segment::test_split_cells_mixed"], "all_changed": [["rich/segment.py", "Segment._split_cells", 112, 17]], "base_commit": "4101991898ee7a09fe1706daca24af5e1e054862"}

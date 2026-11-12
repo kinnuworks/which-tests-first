@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"toolz.tests.test_signatures\", \"toolz.tests.test_is_valid\", \"toolz.tests.test_is_valid_py3\", \"toolz.tests.test_is_valid_curry\", \"toolz.tests.test_introspect_curry_valid_py3\"]}", "wall_s": 6.182911396026611, "prompt_tokens": 1027, "output_tokens": 76, "prompt_s": 1.776152, "gen_s": 4.366762}

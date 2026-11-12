@@ -14,6 +14,8 @@ Median failing tests per task: 2
 | Coverage (upper bound) | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.03 [0.00, 0.07] |
 | Gemma 4 E2B re-rank | 0.05 [0.00, 0.12] | 0.07 [0.00, 0.17] | 0.10 [0.03, 0.20] |
 | Gemma 4 E4B re-rank | 0.05 [0.00, 0.12] | 0.10 [0.03, 0.20] | 0.10 [0.03, 0.20] |
+| Gemma 4 E2B, prompt v2 | 0.10 [0.03, 0.20] | 0.17 [0.07, 0.30] | 0.25 [0.12, 0.40] |
+| Gemma 4 E4B, prompt v2 | 0.17 [0.07, 0.30] | 0.23 [0.10, 0.38] | 0.28 [0.15, 0.42] |
 
 | Method | R@10% of suite | median rank of first failing test |
 |---|---|---|
@@ -27,8 +29,14 @@ Median failing tests per task: 2
 | Coverage (upper bound) | 0.28 [0.15, 0.42] | 566 |
 | Gemma 4 E2B re-rank | 0.42 [0.28, 0.57] | 422 |
 | Gemma 4 E4B re-rank | 0.42 [0.28, 0.57] | 422 |
+| Gemma 4 E2B, prompt v2 | 0.57 [0.42, 0.72] | 189 |
+| Gemma 4 E4B, prompt v2 | 0.57 [0.42, 0.72] | 199 |
 
 - Gemma 4 E2B re-rank minus Graph distance, Recall@10: +0.000 [+0.000, +0.000]
 - Gemma 4 E2B re-rank minus Lexical similarity, Recall@10: -0.025 [-0.125, +0.075]
 - Gemma 4 E4B re-rank minus Graph distance, Recall@10: +0.000 [+0.000, +0.000]
 - Gemma 4 E4B re-rank minus Lexical similarity, Recall@10: -0.025 [-0.125, +0.075]
+- Gemma 4 E2B, prompt v2 minus Graph distance, Recall@10: +0.150 [+0.050, +0.275]
+- Gemma 4 E2B, prompt v2 minus Lexical similarity, Recall@10: +0.125 [+0.000, +0.250]
+- Gemma 4 E4B, prompt v2 minus Graph distance, Recall@10: +0.175 [+0.075, +0.300]
+- Gemma 4 E4B, prompt v2 minus Lexical similarity, Recall@10: +0.150 [+0.000, +0.300]

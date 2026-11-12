@@ -1,0 +1,1 @@
+{"model": "gemma4:e2b-it-qat", "content": "{\"ranked\": [\"tests.test_stress_sortedlist\", \"tests.test_stress\"]}", "wall_s": 2.6610820293426514, "prompt_tokens": 965, "output_tokens": 21, "prompt_s": 0.651648, "gen_s": 1.938394}

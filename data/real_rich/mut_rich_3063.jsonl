@@ -1,0 +1,1 @@
+{"id": "rich_3063", "file": "rich/markup.py", "line": 67, "function": "escape", "kind": "real", "failing_tests": ["tests.test_markup::test_escape_backslash_end"], "all_changed": [["rich/markup.py", "escape", 67, 3]], "base_commit": "368e8ad77c95a6bef8f9d332039091d1417296bc"}

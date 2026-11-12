@@ -1,0 +1,1 @@
+{"model": "gemma4:e4b-it-qat", "content": "{\"ranked\": [\"tests.test_regex_deprecated_body\", \"tests.test_regex_deprecated_params\", \"tests.test_openapi_examples\"]}", "wall_s": 25.652152061462402, "prompt_tokens": 9326, "output_tokens": 35, "prompt_s": 13.917075, "gen_s": 10.335728}
